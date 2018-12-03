@@ -1,0 +1,289 @@
+<template>
+  <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType">
+    <div class="site-navbar__body clearfix">
+      <el-menu
+        class="site-navbar__menu"
+        mode="horizontal">
+        <el-menu-item class="site-navbar__switch site-navbar-li" index="0" @click="sidebarFold = !sidebarFold">
+          <icon-svg name="zhedie"></icon-svg>
+        </el-menu-item>
+      </el-menu>
+      <el-menu
+        class="site-navbar__menu"
+        mode="horizontal">
+        <el-menu-item class="site-navbar__switch site-navbar-li" index="1" style="cursor: text;">
+          <div class="site-navbar-title"><div class="site-navbar-img">
+            <img src="../assets/img/logo.png" alt="logo"></div>
+            鄂州市遏制重特大事故双重预防机制信息平台
+          </div>
+        </el-menu-item>
+      </el-menu>
+      <el-menu
+        class="site-navbar__menu site-navbar__menu--right"
+        mode="horizontal">
+        <el-menu-item class=" site-navbar-li" index="1">
+          <el-dropdown :show-timeout="0" placement="bottom">
+            <span class="el-dropdown-link" style="outline: none;"><i class="el-icon-bell"></i></span>
+            <a class="messageHide" v-show="messageHide">{{messageCount}}</a>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-for="(messageContent,index) in messageContents" v-if="index <= 4"
+                                @click.native="smallMsgShow(messageContent)" key="id">
+                <el-row style="max-width: 200px;">
+                  <el-col :span="24" style="
+                  display: -webkit-box;
+                   -webkit-box-orient: vertical;
+                   -webkit-line-clamp: 2;
+                  overflow: hidden;
+                  line-height: 1.5em;
+                  padding-top:6px;
+                  color: #606266;">{{messageContent.content}}
+                  </el-col>
+                  <el-col :span="24">
+                    <el-col :span="24" style="font-size: 12px; color: #999;">{{messageContent.intervalTime}}</el-col>
+                  </el-col>
+                </el-row>
+              </el-dropdown-item>
+              <el-dropdown-item @click.native="bigMsgShow" style="font-weight: bold">更多+</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-menu-item>
+        <!--<el-menu-item class=" site-navbar-li" index="2">-->
+          <!--<el-badge>-->
+            <!--<icon-svg name="gerenzhongxin"></icon-svg>-->
+            <!--{{ userName }}-->
+          <!--</el-badge>-->
+        <!--</el-menu-item>-->
+        <el-menu-item class=" site-navbar-li" index="2">
+          <el-dropdown :show-timeout="0" placement="bottom">
+            <span class="el-dropdown-link" style="outline: none;"><icon-svg name="gerenzhongxin"></icon-svg>{{userName}}</span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="updatePasswordHandle()" style="font-weight: bold">修改密码</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-menu-item>
+        <el-menu-item class=" site-navbar-li" index="3">
+          <el-badge @click.native="logoutHandle()">
+            <icon-svg name="tuichu"></icon-svg>
+          </el-badge>
+        </el-menu-item>
+      </el-menu>
+    </div>
+    <!-- 弹窗, 修改密码 -->
+    <update-password v-if="updatePassowrdVisible" ref="updatePassowrd"></update-password>
+    <!--消息小弹框-->
+    <small-message v-if="smallMessageVisible" @mesHidden="mesHide" ref="smallMessage"></small-message>
+    <!--消息大弹框-->
+    <big-message v-if="bigMessageVisible" @bigMsgHidden="bigMsgHide" ref="bigMessage"></big-message>
+  </nav>
+</template>
+
+<script>
+  import UpdatePassword from './main-navbar-update-password'
+  import {clearLoginInfo, getUUID} from '@/utils'
+  import smallMessage from './main-smallMessage'
+  import bigMessage from './main-bigMessage'
+  export default {
+    data () {
+      return {
+        updatePassowrdVisible: false,
+        smallMessageVisible: false,
+        bigMessageVisible: false,
+        messageHide: false,
+        messageContents: [],
+        messageCount: 0,
+        webSocket: null
+      }
+    },
+    components: {
+      UpdatePassword,
+      smallMessage,
+      bigMessage
+    },
+    computed: {
+      navbarLayoutType: {
+        get () { return this.$store.state.common.navbarLayoutType }
+      },
+      sidebarFold: {
+        get () { return this.$store.state.common.sidebarFold },
+        set (val) { this.$store.commit('common/updateSidebarFold', val) }
+      },
+      mainTabs: {
+        get () { return this.$store.state.common.mainTabs },
+        set (val) { this.$store.commit('common/updateMainTabs', val) }
+      },
+      userName: {
+        get () { return this.$store.state.user.name }
+      },
+      userId: {
+        get() {
+          return this.$store.state.user.id
+        }
+      }
+    },
+    created () {
+      this.initWebSocket()
+      this.getUnreadMessageCount()
+      this.getLastMessage()
+    },
+    mounted () {
+      setInterval(() => {
+        this.intervalTask()
+      }, 10000)
+    },
+    destroyed: function () {
+      // 页面销毁时关闭长连接
+      this.webSocketClose()
+    },
+    methods: {
+      // 修改密码
+      updatePasswordHandle () {
+        this.updatePassowrdVisible = true
+        this.$nextTick(() => {
+          this.$refs.updatePassowrd.init()
+        })
+      },
+      // 退出
+      logoutHandle () {
+        this.$confirm(`确定进行[退出]操作?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/sys/logout'),
+            method: 'post',
+            data: this.$http.adornData()
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              clearLoginInfo()
+              this.$router.push({ name: 'login' })
+            }
+          })
+        }).catch(() => {})
+      },
+      smallMsgShow (messageContent) {
+        this.smallMessageVisible = true
+        this.$nextTick(() => {
+          this.$refs.smallMessage.init(messageContent)
+          var url = '/sms/sysSmsRecord/updateMessageStatus/' + messageContent.id
+          this.$http({
+            url: this.$http.adornUrl(url),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.getUnreadMessageCount()
+              this.getLastMessage()
+            }
+          })
+        })
+      },
+      mesHide () {
+        this.smallMessageVisible = false
+      },
+      bigMsgShow () {
+        this.bigMessageVisible = true
+        this.$nextTick(() => {
+          this.$refs.bigMessage.getDataList()
+        })
+      },
+      bigMsgHide () {
+        this.bigMessageVisible = false
+      },
+      // 首页获取未读消息的条数
+      getUnreadMessageCount () {
+        const userId = this.userId
+        const url = '/sms/sysSmsRecord/getUnreadMessageCount/' + userId
+        this.$http({
+          url: this.$http.adornUrl(url),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.messageCount = data.smsRecordCount
+            if (this.messageCount === 0) {
+              this.messageHide = false
+            } else {
+              this.messageHide = true
+            }
+          }
+        })
+      },
+      // 首页获取最近消息的条数
+      getLastMessage () {
+        const userId = this.userId
+        const url = '/sms/sysSmsRecord/getLastMessage/' + userId
+        this.$http({
+          url: this.$http.adornUrl(url),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.messageContents = data.smsRecordList
+          }
+        })
+      },
+      // 定时任务
+      intervalTask () {
+        this.getLastMessage()
+        this.getUnreadMessageCount()
+      },
+      initWebSocket() {
+        console.log('消息推送：用户ID:' + this.userId)
+        // 初始化webSocket
+        const userId = this.userId + '_' + getUUID()
+        const wsUri = window.SITE_CONFIG.wsUrl + '/ws/sms/' + userId
+        this.webSocket = new WebSocket(wsUri)
+        this.webSocket.onopen = this.webSocketOnOpen
+        this.webSocket.onerror = this.webSocketOnError
+        this.webSocket.onmessage = this.webSocketOnMessage
+        this.webSocket.onclose = this.webSocketClose
+      },
+      webSocketOnOpen() {
+        console.log('WebSocket连接成功')
+      },
+      webSocketOnError(e) {
+        // 错误
+        console.log('WebSocket连接发生错误')
+      },
+      webSocketOnMessage(e) {
+        // 接受数据
+        const redata = JSON.parse(e.data)
+        console.log(redata)
+        this.smallMessageVisible = true
+        this.$nextTick(() => {
+          this.$refs.smallMessage.init(redata)
+        })
+      },
+      webSocketSend(agentData) {
+        // 数据发送
+        this.webSocket.send(agentData)
+      },
+      webSocketClose(e) {
+        // 关闭
+        console.log('connection closed')
+      }
+    }
+  }
+</script>
+<style>
+  .el-dropdown{
+    color: #fff;
+  }
+  .messageHide{
+    position: absolute;
+    left: 20px;
+    top:10px;
+    height: 15px;
+    font-size: 12px;
+    line-height: 1.2em;
+    background: #f00;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    padding: 0 3px;
+  }
+  .site-navbar-li{
+    position: relative;
+  }
+</style>

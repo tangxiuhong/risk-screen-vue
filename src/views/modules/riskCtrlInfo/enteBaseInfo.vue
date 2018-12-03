@@ -1,0 +1,297 @@
+<!--企业基本信息-->
+<template>
+  <el-row class="enteBaseInfo">
+      <div class="enteBaseInfo-small-title">基本信息</div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">企业名称</div>
+        <div class="enteBaseInfo-row-cell-x">{{this.dataForm.enterpriseName}}</div>
+        <div class="enteBaseInfo-row-cell-s">成立时间：</div>
+        <div class="enteBaseInfo-row-cell-s">{{this.dataForm.foundingTime}}</div>
+        <div class="enteBaseInfo-row-cell-s">法定代表人：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.legalPerson}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">企业编码类型：</div>
+        <div class="enteBaseInfo-row-cell-x">{{this.dataForm.businessLicenseNumber}}</div>
+        <div class="enteBaseInfo-row-cell-s">证件代码：</div>
+        <div class="enteBaseInfo-row-cell-m">20150721</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">经营范围：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.businessScope}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">通讯地址：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.contactAddress}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">占地面积(平方米)：</div>
+        <div class="enteBaseInfo-row-cell-x">{{this.dataForm.conversArea}}</div>
+        <div class="enteBaseInfo-row-cell-s">注册资本(万元)：</div>
+        <div class="enteBaseInfo-row-cell-s">{{this.dataForm.registeredCapital}}</div>
+        <div class="enteBaseInfo-row-cell-s">总安全费用：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.totalSafetyCost}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">固定资产总值(万元)：</div>
+        <div class="enteBaseInfo-row-cell-s">{{this.dataForm.fixedAssets}}</div>
+        <div class="enteBaseInfo-row-cell-s">联系电话：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.telephone}}</div>
+      </div>
+      <div class="enteBaseInfo-small-title">安全生产信息</div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">安全生产机构名称：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.safetyOrganizationName}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">安全部门负责人：</div>
+        <div class="enteBaseInfo-row-cell-x">{{this.dataForm.safePerson}}</div>
+        <div class="enteBaseInfo-row-cell-s">安全部门负责人手机：</div>
+        <div class="enteBaseInfo-row-cell-s">{{this.dataForm.safePersonMobile}}</div>
+        <div class="enteBaseInfo-row-cell-s">安全生产固定电话：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.safePersonTelephone}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">主要负责人：</div>
+        <div class="enteBaseInfo-row-cell-x">{{this.dataForm.mainPerson}}</div>
+        <div class="enteBaseInfo-row-cell-s">主要负责人移动电话：</div>
+        <div class="enteBaseInfo-row-cell-s">{{this.dataForm.mainPersonMobile}}</div>
+        <div class="enteBaseInfo-row-cell-s">主要负责人固定电话：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.mainPersonTelephone}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">特种作业人员数：</div>
+        <div class="enteBaseInfo-row-cell-s">{{this.dataForm.specialPersonNumber}}</div>
+        <div class="enteBaseInfo-row-cell-s">注册安全工程师人员数：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.registerPersonNumber}}</div>
+      </div>
+      <div class="enteBaseInfo-row">
+        <div class="enteBaseInfo-row-cell-s">专职应急管理人员数：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.emergencyPersonNumber}}</div>
+      </div>
+      <div class="enteBaseInfo-small-title">监管部门信息</div>
+      <div class="enteBaseInfo-row" style="border-bottom: 1px solid #133050;">
+        <div class="enteBaseInfo-row-cell-s">企业分级：</div>
+        <div class="enteBaseInfo-row-cell-x">{{this.dataForm.enterpriseLever}}</div>
+        <div class="enteBaseInfo-row-cell-s">监管部门类型：</div>
+        <div class="enteBaseInfo-row-cell-s">{{this.dataForm.varName3}}</div>
+        <div class="enteBaseInfo-row-cell-s">主管部门：</div>
+        <div class="enteBaseInfo-row-cell-m">{{this.dataForm.regulatorName}}</div>
+      </div>
+  </el-row>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        dataForm: {
+          id: 0,
+          enterpriseName: '',
+          foundingTime: '',
+          legalPerson: '',
+          businessLicenseNumber: '',
+          telephone: '',
+          conversArea: '',
+          registeredCapital: '',
+          totalSafetyCost: '',
+          zipCode: '',
+          email: '',
+          fixedAssets: '',
+          license: '',
+          mapX: '',
+          mapY: '',
+          licenseStartTime: '',
+          licenseEndTime: '',
+          productScope: '',
+          address: '',
+          businessScope: '',
+          contactAddress: '',
+          toxicDesc: '',
+          dangerousProcessDesc: '',
+          firmSize: '',
+          enterpriseType: '',
+          isPoint: '',
+          isPilot: '',
+          ifuseToxic: '',
+          ifUseDangerousProcess: '',
+          status: '',
+          safetyOrganizationName: '',
+          specialPersonNumber: '',
+          registerPersonNumber: '',
+          emergencyPersonNumber: '',
+          enterpriseLever: '',
+          regulatorType: '',
+          regulatorName: '',
+          varName3: '',
+          safePerson: '',
+          safePersonMobile: '',
+          safePersonTelephone: '',
+          mainPerson: '',
+          mainPersonMobile: '',
+          mainPersonTelephone: ''
+        },
+        firmSizeOptions: [{
+          value: 1,
+          label: '100以下'
+        }, {
+          value: 2,
+          label: '100-1000'
+        }, {
+          value: 3,
+          label: '1000-2000'
+        }, {
+          value: 4,
+          label: '2000-5000'
+        }, {
+          value: 5,
+          label: '5000以上'
+        }],
+        enterpriseTypeOptions: [{
+          value: 0,
+          label: '国企'
+        }, {
+          value: 1,
+          label: '民企'
+        }, {
+          value: 2,
+          label: '私企'
+        }, {
+          value: 3,
+          label: '外企'
+        }],
+        isPointOptions: [{
+          value: 0,
+          label: '非重点企业'
+        }, {
+          value: 1,
+          label: '重点企业'
+        }],
+        isPilotOptions: [{
+          value: 0,
+          label: '非试点企业'
+        }, {
+          value: 1,
+          label: '试点企业'
+        }],
+        ifuseToxicOptions: [{
+          value: 0,
+          label: '是'
+        }, {
+          value: 1,
+          label: '否'
+        }],
+        ifUseDangerousProcessOptions: [{
+          value: 0,
+          label: '是'
+        }, {
+          value: 1,
+          label: '否'
+        }],
+        statusOptions: [{
+          value: 0,
+          label: '正常'
+        }, {
+          value: 1,
+          label: '关闭'
+        }],
+        dataRule: {}
+      }
+    },
+    methods: {
+      init (id) {
+        console.log('2 id:' + id)
+        this.$http({
+          url: this.$http.adornUrl('/enterprise/sysEnterpriseDetails/getEnterpriseInfoList'),
+          method: 'get',
+          params: this.$http.adornParams({eId: id})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            for (var x in data.list) {
+              this.dataForm.enterpriseName = data.list[x].enterpriseName
+              this.dataForm.foundingTime = data.list[x].foundingTime
+              this.dataForm.legalPerson = data.list[x].legalPerson
+              this.dataForm.businessLicenseNumber = data.list[x].businessLicenseNumber
+              this.dataForm.telephone = data.list[x].telephone
+              this.dataForm.conversArea = data.list[x].conversArea
+              this.dataForm.registeredCapital = data.list[x].registeredCapital
+              this.dataForm.totalSafetyCost = data.list[x].totalSafetyCost
+              this.dataForm.zipCode = data.list[x].zipCode
+              this.dataForm.email = data.list[x].email
+              this.dataForm.fixedAssets = data.list[x].fixedAssets
+              this.dataForm.license = data.list[x].license
+              this.dataForm.mapX = data.list[x].mapX
+              this.dataForm.mapY = data.list[x].mapY
+              this.dataForm.licenseStartTime = data.list[x].licenseStartTime
+              this.dataForm.licenseEndTime = data.list[x].licenseEndTime
+              this.dataForm.productScope = data.list[x].productScope
+              this.dataForm.address = data.list[x].address
+              this.dataForm.businessScope = data.list[x].businessScope
+              this.dataForm.contactAddress = data.list[x].contactAddress
+              this.dataForm.toxicDesc = data.list[x].toxicDesc
+              this.dataForm.dangerousProcessDesc = data.list[x].dangerousProcessDesc
+              this.dataForm.firmSize = data.list[x].firmSize
+              this.dataForm.enterpriseType = data.list[x].enterpriseType
+              this.dataForm.isPoint = data.list[x].isPoint
+              this.dataForm.isPilot = data.list[x].isPilot
+              this.dataForm.ifuseToxic = data.list[x].ifuseToxic
+              this.dataForm.ifUseDangerousProcess = data.list[x].ifUseDangerousProcess
+              this.dataForm.status = data.list[x].status
+              this.dataForm.safetyOrganizationName = data.list[x].safetyOrganizationName
+              this.dataForm.specialPersonNumber = data.list[x].specialPersonNumber
+              this.dataForm.registerPersonNumber = data.list[x].registerPersonNumber
+              this.dataForm.emergencyPersonNumber = data.list[x].emergencyPersonNumber
+              this.dataForm.enterpriseLever = data.list[x].enterpriseLever
+              this.dataForm.regulatorType = data.list[x].regulatorType
+              this.dataForm.regulatorName = data.list[x].regulatorName
+              this.dataForm.varName3 = data.list[x].varName3
+              this.dataForm.safePerson = data.list[x].safePerson
+              this.dataForm.safePersonMobile = data.list[x].safePersonMobile
+              this.dataForm.safePersonTelephone = data.list[x].safePersonTelephone
+              this.dataForm.mainPerson = data.list[x].mainPerson
+              this.dataForm.mainPersonMobile = data.list[x].mainPersonMobile
+              this.dataForm.mainPersonTelephone = data.list[x].mainPersonTelephone
+            }
+          }
+        })
+      }
+    }
+  }
+</script>
+
+<style>
+  .enteBaseInfo div{
+    float: left;
+  }
+  .enteBaseInfo-small-title {
+    width: 100%;
+    border:solid #133050;
+    border-width:1px;
+    border-bottom: 0;
+    padding:6px 0px 6px 5px;
+    font-weight: bold;
+    background-color: #042141;
+  }
+  .enteBaseInfo-row{
+    height: 30px;
+    width: 100%;
+    border: 1px solid #133050;
+    border-bottom: 0;
+  }
+  .enteBaseInfo-row-cell-x{
+    width:25%;
+    height: 100%;
+    padding:2px 0px 0px 5px;
+    border-right: 1px solid #133050;
+  }
+  .enteBaseInfo-row-cell-m{
+    width:16%;
+    height: 100%;
+    padding:2px 0px 0px 5px;
+  }
+  .enteBaseInfo-row-cell-s{
+    width:14%;
+    height: 100%;
+    padding:2px 0px 0px 5px;
+    border-right: 1px solid #133050;
+  }
+</style>

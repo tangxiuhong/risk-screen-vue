@@ -1,0 +1,293 @@
+<!--监测信息-企业监测信息详情-->
+<template>
+  <el-dialog
+    :close-on-click-modal="false"
+    append-to-body
+    fullscreen
+    :visible.sync="visible">
+    <el-row>
+      <div class="moniInfoDetails-content" :style="{height: styleHeight}">
+        <div class="moniInfoDetails-top">
+          <div class="moniInfoDetails-top-left">嘉必优生物技术（武汉）股份有限公司葛店分公司</div>
+          <div class="moniInfoDetails-top-right">监测位置：5 个</div>
+          <div class="moniInfoDetails-top-right">传感器数量：10 个</div>
+        </div>
+        <!--中-->
+        <div class="moniInfoDetails-center">
+          <div class="moniInfoDetails-module">
+            <!--标题-->
+            <div  class="moniInfoDetails-mo-title">
+              <span><p>液位（21.35）</p></span>
+            </div>
+            <div class="moniInfoDetails-module-con">
+              <div class="moniInfoDetails-module-con-top">
+                <div class="moniInfoDetails-module-con-top-left">
+                  <div id="goal-thermometer"></div>
+                </div>
+                <div class="moniInfoDetails-module-con-top-right">
+                  <ul>
+                    <li>液位传感器编号<span>001</span></li>
+                    <li>低位报警阈值<span>001</span></li>
+                    <li>高位报警阈值<span>001</span></li>
+                    <li>液位报警类型<span>001</span></li>
+                    <li>液位报警时间<span>001</span></li>
+                    <li>液位实时值<span>001</span></li>
+                    <li>液位报警说明<span>001</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="moniInfoDetails-module-con-down"></div>
+            </div>
+          </div>
+
+          <div class="moniInfoDetails-module">
+            <!--标题-->
+            <div  class="moniInfoDetails-mo-title">
+              <span><p>温度（21.35）</p></span>
+            </div>
+            <div class="moniInfoDetails-module-con">
+              <!--<div id="goal-thermometer"></div>-->
+              <div class="moniInfoDetails-module-con-top">
+                <div class="moniInfoDetails-module-con-top-left"></div>
+                <div class="moniInfoDetails-module-con-top-right">
+                  <ul>
+                    <li>温度传感器编号<span>001</span></li>
+                    <li>第一级报警阈值<span>001</span></li>
+                    <li>第二级报警阈值<span>001</span></li>
+                    <li>温度报警类型<span>001</span></li>
+                    <li>温度报警时间<span>001</span></li>
+                    <li>温度实时值<span>001</span></li>
+                    <li>温度报警说明<span>001</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="moniInfoDetails-module-con-down"></div>
+            </div>
+          </div>
+
+          <div class="moniInfoDetails-module">
+            <!--标题-->
+            <div  class="moniInfoDetails-mo-title">
+              <span><p>流量（21.35）</p></span>
+            </div>
+            <div class="moniInfoDetails-module-con">
+              <!--<div id="goal-thermometer"></div>-->
+              <div class="moniInfoDetails-module-con-top">
+                <div class="moniInfoDetails-module-con-top-left"></div>
+                <div class="moniInfoDetails-module-con-top-right">
+                  <ul>
+                    <li>流量传感器编号<span>001</span></li>
+                    <li>第一级报警阈值<span>001</span></li>
+                    <li>第二级报警阈值<span>001</span></li>
+                    <li>流量报警类型<span>001</span></li>
+                    <li>流量报警时间<span>001</span></li>
+                    <li>流量实时值<span>001</span></li>
+                    <li>流量报警说明<span>001</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="moniInfoDetails-module-con-down"></div>
+            </div>
+          </div>
+
+          <div class="moniInfoDetails-module">
+            <!--标题-->
+            <div  class="moniInfoDetails-mo-title">
+              <span><p>压力（21.35）</p></span>
+            </div>
+            <div class="moniInfoDetails-module-con">
+              <div class="moniInfoDetails-module-con-top">
+                <div class="moniInfoDetails-module-con-top-left"></div>
+                <div class="moniInfoDetails-module-con-top-right">
+                  <ul>
+                    <li>压力传感器编号<span>001</span></li>
+                    <li>第一级报警阈值<span>001</span></li>
+                    <li>第二级报警阈值<span>001</span></li>
+                    <li>压力报警类型<span>001</span></li>
+                    <li>压力报警时间<span>001</span></li>
+                    <li>压力实时值<span>001</span></li>
+                    <li>压力报警说明<span>001</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="moniInfoDetails-module-con-down"></div>
+            </div>
+          </div>
+        </div>
+        <!--下-->
+        <div class="moniInfoDetails-down">
+          <div class="moniInfoDetails-module">
+            <!--标题-->
+            <div  class="moniInfoDetails-mo-title">
+              <span><p>有毒气体（）</p></span>
+            </div>
+            <div class="moniInfoDetails-module-con">
+              <!--<div id="goal-thermometer"></div>-->
+              <div class="moniInfoDetails-module-con-top">
+                <div class="moniInfoDetails-module-con-top-left"></div>
+                <div class="moniInfoDetails-module-con-top-right">
+                  <ul>
+                    <li>气体传感器编号<span>001</span></li>
+                    <li>第一级报警阈值<span>001</span></li>
+                    <li>第二级报警阈值<span>001</span></li>
+                    <li>气体报警类型<span>001</span></li>
+                    <li>气体报警时间<span>001</span></li>
+                    <li>气体实时值<span>001</span></li>
+                    <li>气体报警说明<span>001</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="moniInfoDetails-module-con-down"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-row>
+  </el-dialog>
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        styleHeight: window.screen.availHeight - 78 + 'px',
+        activeTab: '1',
+        visible: false,
+        enterpriseList: [],
+        enterpriseId: '1209',
+        enterpriseName: '',
+        imgList: [],
+        dataRule: {}
+      }
+    },
+    mounted () {
+    },
+    methods: {
+      init (enterpriseId) {
+      // var currentAmount = 1367
+        console.log('enterpriseId:' + enterpriseId)
+        this.visible = true
+        this.enterpriseId = enterpriseId
+      }
+    }
+}
+</script>
+
+<style>
+  .moniInfoDetails-page-title span{
+    font-size: 20px;
+    font-weight: bold;
+    color: #F6D650;
+    background-image: -webkit-linear-gradient(top, #181E36, #073580 20%);
+  }
+  .moniInfoDetails-mo-title{
+    position: absolute;
+    height: 30px;
+    width:100%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 16px;
+    z-index: 1;
+  }
+  .moniInfoDetails-mo-title p {
+    position: absolute;
+    top:3px;
+    margin-top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+  }
+  .moniInfoDetails-mo-title span{
+    display: inline-block;
+    width: 150px;
+    margin-top: 2px;
+    border-top: 28px solid #21354E;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+  }
+  .moniInfoDetails-content{
+    width:100%;
+    height: 550px;
+  }
+  .moniInfoDetails-top{
+    width:100%;
+    height: 8%;
+  }
+  .moniInfoDetails-top-left{
+    height: 100%;
+    font-size: 20px;
+    padding: 15px;
+    margin-left: 15px;
+    background-color: #042141;
+    border-radius: 5px;
+    float: left;
+  }
+  .moniInfoDetails-top-right{
+    height: 100%;
+    margin-left: 15px;
+    font-size: 14px;
+    padding: 15px;
+    background-color: #042141;
+    border-radius: 5px;
+    color: #F6D650;
+    float: left;
+  }
+  .moniInfoDetails-center{
+    width:100%;
+    height: 40%;
+  }
+  .moniInfoDetails-down{
+    width:100%;
+    height: 40%;
+  }
+  .moniInfoDetails-module{
+    position: relative;
+    width: 24%;
+    height: 99%;
+    margin: 10px 0 0 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+  .moniInfoDetails-module-con{
+    width: 100%;
+    height: calc(100% - 30px);
+    margin-top: 30px;
+  }
+  .moniInfoDetails-module-con-top{
+    width: 100%;
+    height: 75%;
+    float: left;
+  }
+  .moniInfoDetails-module-con-top-left{
+    width: 35%;
+    height: 95%;
+    margin-top: 5%;
+    border-right: 1px #8a979e solid;
+    float: left;
+  }
+  .moniInfoDetails-module-con-top-right{
+    width: 65%;
+    height: 100%;
+    float: left;
+  }
+  .moniInfoDetails-module-con-top-right ul{
+    margin: 10px;
+    padding: 5px;
+  }
+  .moniInfoDetails-module-con-top-right ul li{
+    list-style: none;
+    line-height: 22px;
+  }
+  .moniInfoDetails-module-con-top-right span{
+    width: 50px;
+    padding-left: 10px;
+    font-weight: bold;
+  }
+  .moniInfoDetails-module-con-down{
+    width: 100%;
+    height: 23%;
+    float: left;
+  }
+</style>

@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="42108cf6-62c5-4db6-a38d-8203d18d12eb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/assets/scss/_base.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17779">
+              <caret line="773" column="22" selection-start-line="773" selection-start-column="22" selection-end-line="773" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/commDisp/commDisp.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3220">
+              <caret line="142" selection-start-line="142" selection-end-line="142" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/home/home.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6187">
+              <caret line="273" column="19" selection-start-line="273" selection-start-column="19" selection-end-line="273" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskDynamicAnalysis.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17112">
+              <caret line="777" column="16" lean-forward="true" selection-start-line="777" selection-start-column="16" selection-end-line="777" selection-end-column="16" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/entePeriEnvi.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15387">
+              <caret line="368" column="20" lean-forward="true" selection-start-line="368" selection-start-column="20" selection-end-line="368" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskDynamicAnalysis-single.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="897">
+              <caret line="39" column="19" selection-start-line="39" selection-start-column="19" selection-end-line="39" selection-end-column="19" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/perfEval/perfEval.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1058">
+              <caret line="628" column="17" selection-start-line="628" selection-start-column="17" selection-end-line="628" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/router/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="16">
+              <caret line="122" column="10" lean-forward="true" selection-start-line="122" selection-start-column="10" selection-end-line="122" selection-end-column="10" />
+              <folding>
+                <element signature="e#63#84#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskCtrlInfo.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="483">
+              <caret line="21" column="70" lean-forward="true" selection-start-line="21" selection-start-column="70" selection-end-line="21" selection-end-column="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/modules/emerManage/emerManage.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15318">
+              <caret line="368" selection-start-line="368" selection-end-line="368" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Vue Single File Component" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>site-sidebar--fold</find>
+      <find>icon</find>
+      <find>font-size</find>
+      <find>.el-menu-item</find>
+      <find>sidebarLayoutSkin</find>
+      <find>icon-svg</find>
+      <find>16px</find>
+      <find>14px</find>
+      <find>.el-dropdown</find>
+      <find>site-navbar__body</find>
+      <find>.sysTitleName</find>
+      <find>.riskDynaAnal-down-left-up-con-down</find>
+      <find>riskSyle</find>
+      <find>riskDynaAnal-down-left-up-con-down</find>
+      <find>.site-ground</find>
+      <find>.searchBtn</find>
+      <find>rightDownLeft</find>
+      <find>riskDynaAnal-down-left</find>
+      <find>riskDynaAnal-down-left-up</find>
+      <find>animate</find>
+      <find>mapIcon</find>
+      <find>opt_station_hover</find>
+      <find>modSelectList</find>
+      <find>initUpPie</find>
+      <find>riskLevelColor</find>
+      <find>el-form-item__content</find>
+      <find>entePeriEnvi-right-con</find>
+      <find>riskDynaAnal-up-left-up</find>
+      <find>riskEntCount</find>
+      <find>mainRoutes</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>70px</replace>
+      <replace>20px</replace>
+    </replaceStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/build/webpack.base.conf.js" />
+        <option value="$PROJECT_DIR$/src/utils/httpRequest.js" />
+        <option value="$PROJECT_DIR$/src/router/index.js" />
+        <option value="$PROJECT_DIR$/src/utils/index.js" />
+        <option value="$PROJECT_DIR$/src/views/main-navbar-update-password.vue" />
+        <option value="$PROJECT_DIR$/static/config/index.js" />
+        <option value="$PROJECT_DIR$/src/views/modules/moniWarn/visuInte-lookMore.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-cityDanger.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-hiddenEffectRisk.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-hiddenInfo.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-maiorHiddenInfo.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-majorHiddenList.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-riskToHidden.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-unitInfo.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/moniWarn/moniWarn-echartsBar.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteBaseInfo.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/emerManage/emerManage-mailList.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/emptyPage.vue" />
+        <option value="$PROJECT_DIR$/src/views/emptyPage.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/emerManage/emerManage-expert.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/emerManage/emerManage-enterpriseInfo.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/emerManage/emerManage-plans.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/emerManage/emerManage-resources.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/moniWarn/moniInfo-realTime.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/moniWarn/moniInfo-videoMoni.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/moniWarn/moniInfoDetails.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/moniWarn/moniWarn.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/perfEval/perfEval-enterprise.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/perfEval/perfEval-industry.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/perfEval/perfEval-region.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/commDisp/commDisp-distStreetTab.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/commDisp/commDisp-industryTab.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/moniWarn/visuInte.vue" />
+        <option value="$PROJECT_DIR$/src/App.vue" />
+        <option value="$PROJECT_DIR$/src/views/main-navbar.vue" />
+        <option value="$PROJECT_DIR$/src/views/main-sidebar.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/emerManage/emerManage.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/commDisp/commDisp.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskCtrlInfo.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/riskCtrlInfo/entePeriEnvi.vue" />
+        <option value="$PROJECT_DIR$/src/assets/scss/_base.scss" />
+        <option value="$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskDynamicAnalysis.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskDynamicAnalysis-single.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/home/home.vue" />
+        <option value="$PROJECT_DIR$/src/views/modules/perfEval/perfEval.vue" />
+      </list>
+    </option>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="5" />
+    <option name="y" value="-20" />
+    <option name="width" value="1080" />
+    <option name="height" value="555" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="router" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="risk-big-screen-vue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="risk-big-screen-vue" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="common&#9;null&#9;null" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="E:/learn/vue/test" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="D:\project\risk-big-screen-vue\node_modules\eslint" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\project\risk-big-screen-vue\src\views" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="npm.build">
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="npm.build" />
+      <item itemvalue="npm.dev" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+        <item itemvalue="npm.build" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>C:\Users\admin\AppData\Roaming\Subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\project\risk-big-screen-vue" />
+          <option name="myCopyRoot" value="D:\project\risk-big-screen-vue" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="D:\project\risk-big-screen-vue" />
+          <option name="myCopyRoot" value="D:\project\risk-big-screen-vue" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="42108cf6-62c5-4db6-a38d-8203d18d12eb" name="Default Changelist" comment="" />
+      <created>1543302100556</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1543302100556</updated>
+      <workItem from="1543302101762" duration="3725000" />
+      <workItem from="1543307062485" duration="6556000" />
+      <workItem from="1543320354694" duration="54000" />
+      <workItem from="1543322388707" duration="4521000" />
+      <workItem from="1543369478327" duration="25586000" />
+      <workItem from="1543454752681" duration="18050000" />
+      <workItem from="1543541692984" duration="13213000" />
+      <workItem from="1543564988865" duration="2167000" />
+    </task>
+    <task id="LOCAL-00001">
+      <created>1543310517259</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1543310517259</updated>
+    </task>
+    <task id="LOCAL-00002">
+      <created>1543326909052</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1543326909052</updated>
+    </task>
+    <task id="LOCAL-00003" summary="修复退出和修改密码bug">
+      <created>1543377261042</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1543377261042</updated>
+    </task>
+    <task id="LOCAL-00004">
+      <created>1543377810820</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1543377810820</updated>
+    </task>
+    <task id="LOCAL-00005">
+      <created>1543390657235</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1543390657235</updated>
+    </task>
+    <task id="LOCAL-00006">
+      <created>1543390721323</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1543390721323</updated>
+    </task>
+    <task id="LOCAL-00007">
+      <created>1543394657712</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1543394657713</updated>
+    </task>
+    <task id="LOCAL-00008">
+      <created>1543395129243</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1543395129243</updated>
+    </task>
+    <task id="LOCAL-00009">
+      <created>1543455202559</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1543455202559</updated>
+    </task>
+    <task id="LOCAL-00010">
+      <created>1543458082680</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1543458082680</updated>
+    </task>
+    <task id="LOCAL-00011">
+      <created>1543462836086</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1543462836086</updated>
+    </task>
+    <task id="LOCAL-00012">
+      <created>1543463839707</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1543463839707</updated>
+    </task>
+    <task id="LOCAL-00013">
+      <created>1543467777470</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1543467777470</updated>
+    </task>
+    <task id="LOCAL-00014">
+      <created>1543563578510</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1543563578510</updated>
+    </task>
+    <task id="LOCAL-00015">
+      <created>1543564678422</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1543564678422</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="73872000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="848" extended-state="7" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49232915" visible="true" weight="0.24966975" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Gulp" order="2" side_tool="true" />
+      <window_info id="npm" order="3" sideWeight="0.5076709" side_tool="true" weight="0.24966975" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32914925" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32914925" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" weight="0.32914925" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32914925" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="修复退出和修改密码bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/views/modules/emerManage/emerManage-resources.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="165" column="52" selection-start-line="165" selection-start-column="52" selection-end-line="165" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="313" column="52" selection-start-line="313" selection-start-column="52" selection-end-line="313" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-cityDanger.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1058">
+          <caret line="14" column="43" lean-forward="true" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-hiddenDanger.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="42" lean-forward="true" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-hiddenEffectRisk.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1403">
+          <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-hiddenInfo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="13" column="34" lean-forward="true" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/hiddRiskMana/hiddRiskMana-unitInfo.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/home/home-realDataSms.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/home/home-riskChangeSms.vue">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniInfo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-759" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniInfo-realTime.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="35" column="51" selection-start-line="35" selection-start-column="51" selection-end-line="35" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniInfo-persLoca.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1614" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniInfo-histData.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniInfo-videoMoni.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="37" column="51" selection-start-line="37" selection-start-column="51" selection-end-line="37" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniInfoDetails.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="187" column="51" selection-start-line="187" selection-start-column="51" selection-end-line="187" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniWarn.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="111" column="52" selection-start-line="111" selection-start-column="52" selection-end-line="111" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/moniWarn-echartsBar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/visuInte-lookMore.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/perfEval/perfEval-enterprise.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="278" column="52" selection-start-line="278" selection-start-column="52" selection-end-line="278" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/perfEval/perfEval-industry.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="301" column="52" selection-start-line="301" selection-start-column="52" selection-end-line="301" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/perfEval/perfEval-region.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="277" column="52" selection-start-line="277" selection-start-column="52" selection-end-line="277" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteBaseInfo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteMajorNotice.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteMoniWarn.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteRiskCard.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteRiskControlFile.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enterpriseInfoCheck.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteRiskSub.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enterpriseSiSe.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/enteSafetyWork.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskCtrlInfo-area.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskCtrlInfo-industry.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/commDisp/commDisp-distStreetTab.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="1241" column="15" lean-forward="true" selection-start-line="1241" selection-start-column="15" selection-end-line="1241" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/moniWarn/visuInte.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="183" column="3" lean-forward="true" selection-start-line="183" selection-start-column="3" selection-end-line="183" selection-end-column="3" />
+          <folding>
+            <element signature="n#style#0;n#video#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/commDisp/commDisp-industryTab.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="1191" column="36" selection-start-line="1191" selection-start-column="36" selection-end-line="1191" selection-end-column="36" />
+          <folding>
+            <element signature="n#div#2;n#div#0;n#el-tab-pane#0;n#el-tabs#0;n#el-dialog#0;n#template#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/main-sidebar-sub-menu.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="920">
+          <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/store/modules/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="13" column="23" lean-forward="true" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/main.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" column="41" lean-forward="true" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/main-sidebar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="4" column="50" lean-forward="true" selection-start-line="4" selection-start-column="50" selection-end-line="4" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/main-navbar.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="453">
+          <caret line="295" selection-start-line="295" selection-end-line="295" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#el-dropdown#0;n#el-menu-item#0;n#el-menu#1;n#div#0;n#nav#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-row#0;n#el-dropdown-item#0;n#el-dropdown-menu#0;n#el-dropdown#0;n#el-menu-item#0;n#el-menu#1;n#div#0;n#nav#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#0;n#el-row#0;n#el-dropdown-item#0;n#el-dropdown-menu#0;n#el-dropdown#0;n#el-menu-item#0;n#el-menu#1;n#div#0;n#nav#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-col#0;n#el-col#1;n#el-row#0;n#el-dropdown-item#0;n#el-dropdown-menu#0;n#el-dropdown#0;n#el-menu-item#0;n#el-menu#1;n#div#0;n#nav#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-dropdown-item#1;n#el-dropdown-menu#0;n#el-dropdown#0;n#el-menu-item#0;n#el-menu#1;n#div#0;n#nav#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#el-dropdown#0;n#el-menu-item#1;n#el-menu#1;n#div#0;n#nav#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-dropdown-item#0;n#el-dropdown-menu#0;n#el-dropdown#0;n#el-menu-item#1;n#el-menu#1;n#div#0;n#nav#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/assets/scss/_base.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17779">
+          <caret line="773" column="22" selection-start-line="773" selection-start-column="22" selection-end-line="773" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/commDisp/commDisp.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3220">
+          <caret line="142" selection-start-line="142" selection-end-line="142" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/home/home.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6187">
+          <caret line="273" column="19" selection-start-line="273" selection-start-column="19" selection-end-line="273" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskDynamicAnalysis.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17112">
+          <caret line="777" column="16" lean-forward="true" selection-start-line="777" selection-start-column="16" selection-end-line="777" selection-end-column="16" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-row#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/entePeriEnvi.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15387">
+          <caret line="368" column="20" lean-forward="true" selection-start-line="368" selection-start-column="20" selection-end-line="368" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskDynamicAnalysis-single.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="897">
+          <caret line="39" column="19" selection-start-line="39" selection-start-column="19" selection-end-line="39" selection-end-column="19" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/riskCtrlInfo/riskCtrlInfo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="21" column="70" lean-forward="true" selection-start-line="21" selection-start-column="70" selection-end-line="21" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/emerManage/emerManage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15318">
+          <caret line="368" selection-start-line="368" selection-end-line="368" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/modules/perfEval/perfEval.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1058">
+          <caret line="628" column="17" selection-start-line="628" selection-start-column="17" selection-end-line="628" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/router/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="122" column="10" lean-forward="true" selection-start-line="122" selection-start-column="10" selection-end-line="122" selection-end-column="10" />
+          <folding>
+            <element signature="e#63#84#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

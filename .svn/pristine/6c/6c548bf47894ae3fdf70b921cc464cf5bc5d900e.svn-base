@@ -1,0 +1,300 @@
+<template>
+  <div class="mod-resources">
+    <!--标题-->
+    <el-row>
+      <el-col :span="20">
+        <!--内容区标题公共样式contentTitle，contentImg，contentTxt-->
+        <div class="modTitleBox">
+          <div class="modTitle" @click="selectLists()">
+            <span class="modImg"><img src="../../../assets/img/hiddenRiskManagement/u236.png" alt=""></span>
+            <span class="modTxt">应急资源</span>
+          </div>
+          <div class="modSelectList" v-show="selectList" @click="selectList = false">
+            <div @click="$router.push({ name: 'emerManage' });">应急管理信息</div>
+            <div @click="$router.push({ name: 'emerManage-plans' });">应急预案</div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <div class="emerManage-content" :style="{height: styleHeight}">
+      <el-tabs v-model="resources" type="border-card">
+        <!--应急案例-->
+        <el-tab-pane label="应急案例" name="first">
+          <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+            <el-form-item>
+              <el-input v-model="dataForm.caseName" placeholder="案例名称" clearable></el-input>
+            </el-form-item>
+            <el-select v-model="dataForm.caseType" placeholder="案例类型" clearable>
+              <el-option
+                v-for="item in caseTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-select v-model="dataForm.industryCode" filterable placeholder="行业" clearable @focus="getIndustryTree()">
+              <el-option
+                v-for="item in industryCodeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-form-item>
+              <el-button @click="getDataList()">查询</el-button>
+            </el-form-item>
+          </el-form>
+          <el-table
+            :data="dataList"
+            border
+            v-loading="dataListLoading"
+            style="width: 100%;">
+            <el-table-column
+              prop="caseName"
+              header-align="center"
+              align="center"
+              label="案例名称">
+            </el-table-column>
+            <el-table-column
+              prop="caseType"
+              header-align="center"
+              align="center"
+              label="案例类型">
+              <template slot-scope="scope">
+                <span v-if="scope.row.caseType=== 1">应急案例</span>
+                <span v-else-if="scope.row.caseType === 2">法律法规</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              header-align="center"
+              align="center"
+              label="行业类型">
+            </el-table-column>
+            <el-table-column
+              prop="caseDesc"
+              header-align="center"
+              align="center"
+              label="案例描述">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              header-align="center"
+              align="center"
+              width="150"
+              label="附件下载">
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="lookHandle(scope.row.id)">下载</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            @size-change="sizeChangeHandle"
+            @current-change="currentChangeHandle"
+            :current-page="pageIndex"
+            :page-sizes="[5]"
+            :page-size="pageSize"
+            :total="totalPage"
+            layout="total, sizes, prev, pager, next, jumper">
+          </el-pagination>
+        </el-tab-pane>
+        <!--危险化学品速查-->
+        <el-tab-pane label="危险化学品速查" name="second">
+          <el-table
+            :data="dataList2"
+            border
+            v-loading="dataListLoading1"
+            style="width: 100%;">
+            <el-table-column
+              prop="chemistryName"
+              header-align="center"
+              align="center"
+              label="化学品名称">
+            </el-table-column>
+            <el-table-column
+              prop="processingProperty"
+              header-align="center"
+              align="center"
+              label="工艺特性">
+            </el-table-column>
+            <el-table-column
+              prop="property"
+              header-align="center"
+              align="center"
+              label="特征">
+            </el-table-column>
+            <el-table-column
+              prop="riskDegree"
+              header-align="center"
+              align="center"
+              label="危险程度">
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              header-align="center"
+              align="center"
+              width="150"
+              label="附件下载">
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="lookHandle(scope.row.id)">下载</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            @size-change="sizeChangeHandle1"
+            @current-change="currentChangeHandle1"
+            :current-page="pageIndex1"
+            :page-sizes="[5]"
+            :page-size="pageSize1"
+            :total="totalPage1"
+            layout="total, sizes, prev, pager, next, jumper">
+          </el-pagination>
+        </el-tab-pane>
+      </el-tabs>
+      <emer-manage-download v-if="downloadVisible" ref="download"></emer-manage-download>
+    </div>
+  </div>
+
+</template>
+
+<script>
+  import emerManageDownload from './emerManage-download'
+  export default {
+    data() {
+      return {
+        selectList: false,
+        styleHeight: window.screen.availHeight - 118 + 'px',
+        dataForm: {
+          caseName: '',
+          caseType: '',
+          industryCode: ''
+        },
+        dataList: [],
+        dataList2: [],
+        pageIndex: 1,
+        pageSize: 5,
+        totalPage: 0,
+        dataListLoading: false,
+        pageIndex1: 1,
+        pageSize1: 5,
+        totalPage1: 0,
+        dataListLoading1: false,
+        industryCodeOptions: [],
+        caseTypeOptions: [{
+          value: 1,
+          label: '应急案例'
+        }, {
+          value: 2,
+          label: '法律法规'
+        }],
+        resources: 'first',
+        downloadVisible: false
+      }
+    },
+    components: {
+      emerManageDownload
+    },
+    activated() {
+      this.getDataList()
+      this.getDataList2()
+    },
+    methods: {
+      // 标题切换
+      selectLists () {
+        this.selectList = !this.selectList
+      },
+      // 获取应急案例数据列表
+      getDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/emergency/appEmergencyCase/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'caseName': this.dataForm.caseName,
+            'caseType': this.dataForm.caseType,
+            'businessType': this.dataForm.industryCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 获取危险品速查数据列表
+      getDataList2() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/emergency/appEmergencyChemistry/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex1,
+            'limit': this.pageSize1
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList2 = data.page.list
+            this.totalPage1 = data.page.totalCount
+          } else {
+            this.dataList2 = []
+            this.totalPage1 = 0
+          }
+          this.dataListLoading1 = false
+        })
+      },
+      // 每页数
+      sizeChangeHandle(val) {
+        this.pageSize = val
+        this.pageIndex = 1
+        this.getDataList()
+      },
+      // 当前页
+      currentChangeHandle(val) {
+        this.pageIndex = val
+        this.getDataList()
+      },
+      // 每页数
+      sizeChangeHandle1(val) {
+        this.pageSize1 = val
+        this.pageIndex1 = 1
+        this.getDataList2()
+      },
+      // 当前页
+      currentChangeHandle1(val) {
+        this.pageIndex1 = val
+        this.getDataList2()
+      },
+      // 获取行业树
+      getIndustryTree() {
+        this.$http({
+          url: this.$http.adornUrl('/sys/dic/selectTree/9'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.industryCodeOptions = data.list
+          } else {
+            this.industryCodeOptions = []
+          }
+        })
+      },
+      //  下载 弹框
+      lookHandle (id) {
+        this.downloadVisible = true
+        this.$nextTick(() => {
+          this.$refs.download.init(id)
+        })
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

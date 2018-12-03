@@ -1,0 +1,375 @@
+<template>
+  <div class="perfEval">
+    <el-row>
+      <el-col :span="18">
+        <!--内容区标题公共样式contentTitle，contentImg，contentTxt-->
+        <div class="modTitleBox">
+          <div class="modTitle" @click="selectLists()">
+            <span class="modImg"><img src="../../../assets/img/hiddenRiskManagement/u236.png" alt=""></span>
+            <span class="modTxt">企业绩效</span>
+          </div>
+          <div class="modSelectList" v-show="selectList" @click="selectList = false">
+            <div @click="$router.push({ name: 'perfEval' });">绩效评估信息</div>
+            <div @click="$router.push({ name: 'perfEval-region' });">区域绩效</div>
+            <div @click="$router.push({ name: 'perfEval-industry' });">行业绩效</div>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="tableHead-up">
+          <div class="regionSelect-up-right">
+            <el-select v-model="EnterpriseName" filterable placeholder="企业名称" clearable @change="changeIndustry"
+                       @focus="getIndustryTree()">
+              <el-option
+                v-for="item in EnterpriseListOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <div class="perfEval-content" :style="{height: styleHeight}">
+      <div class="table-down">
+        <table class="tableRulesOfTerms">
+          <thead>
+          <tr>
+            <th>项目</th>
+            <th>内容</th>
+            <th>考核方式</th>
+            <th>当前得分</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td rowspan="4">一、组织与机构 （12分）</td>
+            <td>成立风险分级管控工作组织或机构</td>
+            <td rowspan="4">
+              1、向平台提供文件、资料供查阅核实。<br>
+              2、符合不扣分，缺项、不完善、部分符合扣分，不符合或不提供均不得分。<br>
+              3、每项修正系数为0.9，酌情掌握。
+            </td>
+            <td id="id1">
+              <input type="checkbox" value="133" class="name"><label for="">+4分</label>
+              <input type="checkbox" value="134" class="name"><label for="">+2分</label>
+              <input type="checkbox" value="135" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>由企业实际控制人担任组长，相关分管领导为主要成员</td>
+            <td id="id2">
+              <input type="checkbox" value="136" class="name"><label for="">+4分</label>
+              <input type="checkbox" value="137" class="name"><label for="">+2分</label>
+              <input type="checkbox" value="138" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>工作组织或机构有固定办公地点和管理制度</td>
+            <td id="id3">
+              <input type="checkbox" value="139" class="name"><label for="">+4分</label>
+              <input type="checkbox" value="140" class="name"><label for="">+2分</label>
+              <input type="checkbox" value="141" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>配备有专兼职人员负责风险分级管控工作</td>
+            <td id="id4">
+              <input type="checkbox" value="142" class="name"><label for="">+4分</label>
+              <input type="checkbox" value="143" class="name"><label for="">+2分</label>
+              <input type="checkbox" value="144" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <!--第二行-->
+          <tr>
+            <td rowspan="2">二、目标与计划（8分）</td>
+            <td>制定年度风险分级管控目标</td>
+            <td rowspan="2">
+              1、提供文件、资料供查阅。<br>
+              2、符合不扣分，缺项、不完善、部分符合扣分，不符合或不提供均不得分。<br>
+              3、每项修正系数为0.9，酌情掌握。
+            </td>
+            <td id="id5">
+              <input type="checkbox" value="145" class="name"><label for="">+4分</label>
+              <input type="checkbox" value="146" class="name"><label for="">+2分</label>
+              <input type="checkbox" value="147" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>制定年度风险分级管控实施计划</td>
+            <td id="id6">
+              <input type="checkbox" value="148" class="name"><label for="">+4分</label>
+              <input type="checkbox" value="149" class="name"><label for="">+2分</label>
+              <input type="checkbox" value="150" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <!--第三行-->
+          <tr>
+            <td rowspan="13">三、风险分级管控（65分）</td>
+            <td>建立风险分级管控制度</td>
+            <td rowspan="13">
+              1、提供文件、资料供查阅。<br>
+              2、符合不扣分，缺项、不完善、部分符合扣分，不符合或不提供均不得分。<br>
+              3、每项修正系数为0.9，酌情掌握。
+
+            </td>
+            <td id="id7">
+              <input type="checkbox" value="151" class="name"><label for="">+4分</label>
+              <input type="checkbox" value="152" class="name"><label for="">+2分</label>
+              <input type="checkbox" value="153" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>建立并完善风险相关的操作规程、作业指导书等</td>
+            <td id="id8">
+              <input type="checkbox" value="154" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="155" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="156" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>建立并完善风险分级管控责任制</td>
+            <td id="id9">
+              <input type="checkbox" value="157" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="158" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="159" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>制定风险分级管控措施</td>
+            <td id="id10">
+              <input type="checkbox" value="160" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="161" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="162" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>建立重大风险应急处置措施或应急预案</td>
+            <td id="id11">
+              <input type="checkbox" value="163" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="164" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="165" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>组织企业风险分级管控培训</td>
+            <td id="id12">
+              <input type="checkbox" value="166" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="167" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="168" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>开展风险辨识、评估、形成风险清单</td>
+            <td id="id13">
+              <input type="checkbox" value="169" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="170" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="171" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>绘制并完善企业风险四色分布图</td>
+            <td id="id14">
+              <input type="checkbox" value="172" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="173" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="174" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>绘制并完善安全作业比较图</td>
+            <td id="id15">
+              <input type="checkbox" value="175" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="176" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="177" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>按要求建立重大安全风险监测系统</td>
+            <td id="id16">
+              <input type="checkbox" value="178" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="179" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="180" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>建立岗位风险告知卡</td>
+            <td id="id17">
+              <input type="checkbox" value="181" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="182" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="183" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>建立重大风险公告</td>
+            <td id="id18">
+              <input type="checkbox" value="184" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="185" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="186" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>接入风险管控平台，按要求上报数据</td>
+            <td id="id19">
+              <input type="checkbox" value="187" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="188" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="189" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>四、资料管理（5分）</td>
+            <td>对风险分级管控资料、记录、图纸等进行分类管理。</td>
+            <td>
+              1、现场检查、查看核实。<br>
+              2、该项修正系数为0.8，酌情掌握。现场检查、查看。
+            </td>
+            <td id="id20">
+              <input type="checkbox" value="190" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="191" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="192" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>五、更新/持续改进（5分）</td>
+            <td>定期进行风险评估，及时更新并持续改进</td>
+            <td>
+              1、现场检查、查看核实。<br>
+              2、每项修正系数为0.8，酌情掌握。
+            </td>
+            <td id="id21">
+              <input type="checkbox" value="193" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="194" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="195" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          <tr>
+            <td>六、效果评价（5分）</td>
+            <td>定期对风险分级管控效果进行评价</td>
+            <td>
+              1、现场检查、查看核实。<br>
+              2、该项修正系数为0.8，酌情掌握。
+            </td>
+            <td id="id22">
+              <input type="checkbox" value="196" class="name"><label for="">+5分</label>
+              <input type="checkbox" value="197" class="name"><label for="">+3分</label>
+              <input type="checkbox" value="198" class="name"><label for="">0分</label>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        checked: true,
+        EnterpriseName: '',
+        EnterpriseListOptions: [],
+        selectedOptions: [],
+        selectList: false,
+        styleHeight: window.screen.availHeight - 105 + 'px'
+      }
+    },
+    mounted() {
+      this.getIndustryTree()
+    },
+    methods: {
+      // 标题切换
+      selectLists() {
+        this.selectList = !this.selectList
+      },
+      // 获取行业树
+      getIndustryTree() {
+        this.$http({
+          url: this.$http.adornUrl('/enterprise/sysEnterprise/selectSysEnterpriseTree/0/0'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.EnterpriseListOptions = data.list
+            this.EnterpriseName = this.EnterpriseListOptions[0].value
+          } else {
+            this.EnterpriseListOptions = []
+          }
+          this.$nextTick(() => {
+            this.$http({
+              url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/getNextMark'),
+              method: 'get',
+              params: this.$http.adornParams({unitType: this.EnterpriseName})
+            }).then(({data}) => {
+              if (data && data.code === 0) {
+                var obj = document.querySelectorAll('.name')
+                for (var x in data.list) {
+                  for (var i = 0; i < obj.length; i++) {
+                    if (obj[i].value === data.list[x].perforId) {
+                      obj[i].checked = true
+                    }
+                  }
+                }
+              }
+            })
+          })
+        })
+      },
+      changeIndustry() {
+        this.EnterpriseName = this.EnterpriseName
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/getNextMark'),
+          method: 'get',
+          params: this.$http.adornParams({unitType: this.EnterpriseName})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            var obj = document.querySelectorAll('.name')
+            for (var k = 0; k < obj.length; k++) {
+              obj[k].checked = false
+            }
+            for (var x in data.list) {
+              for (var i = 0; i < obj.length; i++) {
+                if (obj[i].value === data.list[x].perforId) {
+                  obj[i].checked = true
+                }
+              }
+            }
+          }
+        })
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  .perfEval {
+    & .tableHead-up {
+      display: flex;
+      margin-bottom: 10px;
+      & .regionName-up-left {
+        line-height: 2em;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      & .regionName-up-left,
+      & .regionSelect-up-right {
+        flex: 1;
+        text-align: center;
+      }
+    }
+
+    & .table-down {
+      & .tableRulesOfTerms {
+        & tr {
+          line-height: 2em;
+        }
+      }
+    }
+  }
+
+</style>

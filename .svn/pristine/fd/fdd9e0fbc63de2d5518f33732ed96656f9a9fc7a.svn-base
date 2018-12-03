@@ -1,0 +1,656 @@
+<template>
+  <div class="mod-emerManage">
+    <!--标题-->
+    <el-row>
+      <el-col>
+        <!--内容区标题公共样式contentTitle，contentImg，contentTxt-->
+        <div class="modTitleBox">
+          <div class="modTitle" @click="selectLists()">
+            <span class="modImg"><img src="../../../assets/img/hiddenRiskManagement/u236.png" alt=""></span>
+            <span class="modTxt">绩效评估信息</span>
+          </div>
+          <div class="modSelectList" v-show="selectList" @click="selectList = false">
+            <div @click="$router.push({ name: 'perfEval-region' });">区域绩效</div>
+            <div @click="$router.push({ name: 'perfEval-industry' });">行业绩效</div>
+            <div @click="$router.push({ name: 'perfEval-enterprise' });">企业绩效</div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <!--内容区域-->
+    <div class="perfEval-content" :style="{height: styleHeight}">
+      <div class="perfEval-up">
+        <!--区域排名-->
+        <div class="perfEval-up-left">
+          <!--标题-->
+          <div class="perfEval-mo-title">
+            <span><p>区域排名</p></span>
+          </div>
+          <div class="perfEval-up-left-con">
+            <div class="perfEval-up-left-con-up">{{areaName}}</div>
+            <div class="perfEval-up-left-con-center">分数：<a href="#">{{areaMark}}</a> 分</div>
+            <div class="perfEval-up-left-con-down">名次：{{areaRank}} 名</div>
+          </div>
+
+        </div>
+        <!--柱状图-->
+        <div class="perfEval-up-right" id="commDisp_up_right">
+        </div>
+      </div>
+
+      <div class="perfEval-center">
+        <!--行业排名-->
+        <div class="perfEval-center-left">
+          <!--标题-->
+          <div class="perfEval-mo-title">
+            <span><p>行业排名</p></span>
+          </div>
+          <div class="perfEval-up-left-con">
+            <div class="perfEval-up-left-con-up">{{industryName}}</div>
+            <div class="perfEval-up-left-con-center">分数：<a href="#">{{industryMark}}</a> 分</div>
+            <div class="perfEval-up-left-con-down">名次：{{industryRank}} 名</div>
+          </div>
+
+        </div>
+        <!--柱状图-->
+        <div class="perfEval-center-right" id="commDisp_center_right">
+        </div>
+      </div>
+
+      <!--企业分数-->
+      <div class="perfEval-down">
+        <div class="perfEval-down-left">
+          <!--标题-->
+          <div class="perfEval-mo-title">
+            <span><p>企业分数</p></span>
+          </div>
+          <div class="perfEval-up-left-con">
+            <div class="perfEval-up-left-con-select">
+              <el-select v-model="enterpriseId" clearable filterable placeholder="企业名称" @change="changeEnterprise"
+                         @focus="getEnterpriseByUnitTypeList()">
+                <el-option
+                  v-for="item in EnterpriseList"
+                  :key="item.id"
+                  :label="item.enterpriseName"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="perfEval-up-left-con-center">分数：<a href="#">{{enterpriseMark}}</a> 分</div>
+            <div class="perfEval-up-left-con-down">名次：{{enterpriseRank}} 名</div>
+          </div>
+
+        </div>
+        <!--企业绩效考核前十 后十-->
+        <div class="perfEval-down-right">
+          <div class="perfEval-down-right-table">
+            <table>
+              <tr>
+                <th>序号</th>
+                <th>企业名称(前十名)</th>
+                <th>绩效考核总分</th>
+              </tr>
+              <tr v-for="(item,index) in  manageDataList">
+                <td v-text="(index+1)"></td>
+                <td v-text="item.unitName"></td>
+                <td v-text="item.totalMark"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="perfEval-down-right-table">
+            <table>
+              <tr>
+                <th>序号</th>
+                <th>企业名称(后十名)</th>
+                <th>绩效考核总分</th>
+              </tr>
+              <tr v-for="(item,index) in  manageDataList2">
+                <td v-text="(index+1)"></td>
+                <td v-text="item.unitName"></td>
+                <td v-text="item.totalMark"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<el-tabs v-model="perfEval" type="card" @tab-click="handleClick">-->
+  <!--<el-tab-pane label="绩效评估信息" name="first">-->
+  <!--<perf-eval-assessment></perf-eval-assessment>-->
+  <!--</el-tab-pane>-->
+  <!--<el-tab-pane label="区域绩效" name="second">-->
+  <!--<perf-eval-region></perf-eval-region>-->
+  <!--</el-tab-pane>-->
+  <!--<el-tab-pane label="行业绩效" name="third">-->
+  <!--<perf-eval-industry></perf-eval-industry>-->
+  <!--</el-tab-pane>-->
+  <!--<el-tab-pane label="企业绩效" name="fourth">-->
+  <!--<perf-eval-enterprise></perf-eval-enterprise>-->
+  <!--</el-tab-pane>-->
+  <!--</el-tabs>-->
+</template>
+
+<script>
+  // import perfEvalAssessment from './perfEval-assessment'
+  // import perfEvalRegion from './perfEval-region'
+  // import perfEvalIndustry from './perfEval-industry'
+  // import perfEvalEnterprise from './perfEval-enterprise'
+
+  export default {
+    data () {
+      return {
+        enterpriseId: '',
+        areaName: '鄂城区',
+        areaMark: '',
+        areaRank: '',
+        industryName: '非煤矿山',
+        industryMark: '',
+        industryRank: '',
+        enterpriseMark: '',
+        enterpriseRank: '',
+        CommDispUpRightBar: null,
+        commDispCenterRightBar: null,
+        manageDataList: [],
+        manageDataList2: [],
+        EnterpriseList: [],
+        selectList: false,
+        styleHeight: window.screen.availHeight - 105 + 'px'
+      }
+    },
+    mounted () {
+      this.initCommDispUpRightBar()
+      this.initcommDispCenterRightBar()
+      this.getAreaMarkAndRank()
+      this.getIndustryMarkAndRank()
+      this.getEnterpriseMarkOne()
+      this.getEnterpriseMarkTwo()
+      this.getEnterpriseByUnitTypeList()
+    },
+    activated () {
+      // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
+      if (this.CommDispUpRightBar) {
+        this.CommDispUpRightBar.resize()
+      }
+      if (this.commDispCenterRightBar) {
+        this.commDispCenterRightBar.resize()
+      }
+    },
+    methods: {
+      // 标题切换
+      selectLists () {
+        this.selectList = !this.selectList
+      },
+      initCommDispUpRightBar () {
+        var option = {
+          color: ['#FF9900'],
+          title: {
+            show: true,
+            text: '',
+            left: 'center',
+            textStyle: {
+              color: '#fffff9',
+              fontSize: 16
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          grid: {
+            top: '18%',
+            left: '1%',
+            right: '1%',
+            bottom: '18%',
+            containLabel: true
+          },
+          calculable: true,
+          xAxis: [
+            {
+              type: 'category',
+              data: [''],
+              axisTick: { // 决定是否显示坐标刻度
+                show: false
+              },
+              splitLine: {show: false}, // 网格线
+              splitArea: {show: false}, // 网格区域
+              axisLine: {
+                show: false
+              },
+              axisLabel: {
+                textStyle: {
+                  fontSize: 13,
+                  color: '#fff'// 坐标值得具体的颜色
+                },
+                interval: 0,
+                rotate: 18
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisTick: { // 决定是否显示坐标刻度
+                show: false
+              },
+              splitLine: {
+                show: false
+              }, // 网格线
+              splitArea: {
+                show: false
+              }, // 网格区域
+              axisLine: {
+                show: false
+              }, // 坐标轴
+              axisLabel: {
+                textStyle: {
+                  fontSize: 12,
+                  color: '#fff'
+                }
+              }
+            }
+          ],
+          series: [{
+            name: '绩效分数',
+            type: 'bar',
+            barCategoryGap: '70%',
+            data: [0, 0, 0, 0, 0, 0, 0, 0.0, 0, 0, 0, 0, 0]
+          }]
+        }
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/getBarInfo'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            var nameList = []
+            var totalMarkList = []
+            var myDate = new Date();//获取系统当前时间
+            for (var x in data.dataMap.Arealist) {
+              nameList.push(data.dataMap.Arealist[x].name)
+              totalMarkList.push(data.dataMap.Arealist[x].totalMark)
+            }
+            option.xAxis[0].data = nameList;
+            option.series[0].data = totalMarkList;
+            option.title.text = "鄂州市各区街绩效" + "(" + myDate.toLocaleDateString() + ")";
+            this.CommDispUpRightBar = echarts.init(document.getElementById('commDisp_up_right'))
+            this.CommDispUpRightBar.setOption(option)
+            window.addEventListener('resize', () => {
+              this.CommDispUpRightBar.resize()
+            })
+            // 柱状图点击事件
+            var _this = this
+            this.CommDispUpRightBar.on('click', function (param) {
+              _this.areaName = param.name
+              _this.getAreaMarkAndRank()
+            })
+          }
+        })
+      },
+      getAreaMarkAndRank () {
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/selectAreaSocreRanking'),
+          method: 'get',
+          params: this.$http.adornParams({areaName: this.areaName})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            for (var x in data.list) {
+              this.areaMark = data.list[x].total_mark
+              this.areaRank = data.list[x].rank
+            }
+          }
+        })
+      },
+      initcommDispCenterRightBar () {
+        var option = {
+          color: ['#FF9900'],
+          title: {
+            show: true,
+            text: '',
+            left: 'center',
+            textStyle: {
+              color: '#fffff9',
+              fontSize: 16
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          grid: {
+            top: '18%',
+            left: '1%',
+            right: '1%',
+            bottom: '18%',
+            containLabel: true
+          },
+          calculable: true,
+          xAxis: [
+            {
+              type: 'category',
+              data: [''],
+              axisTick: { // 决定是否显示坐标刻度
+                show: false
+              },
+              splitLine: {show: false}, // 网格线
+              splitArea: {show: false}, // 网格区域
+              axisLine: {
+                show: false
+              },
+              axisLabel: {
+                textStyle: {
+                  fontSize: 13,
+                  color: '#fff'// 坐标值得具体的颜色
+                },
+                interval: 0,
+                rotate: 18
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisTick: { // 决定是否显示坐标刻度
+                show: false
+              },
+              splitLine: {
+                show: false
+              }, // 网格线
+              splitArea: {
+                show: false
+              }, // 网格区域
+              axisLine: {
+                show: false
+              }, // 坐标轴
+              axisLabel: {
+                textStyle: {
+                  fontSize: 12,
+                  color: '#fff'
+                }
+              }
+            }
+          ],
+          series: [{
+            name: '绩效分数',
+            type: 'bar',
+            barCategoryGap: '70%',
+            data: [0, 0, 0, 0, 0, 0, 0, 0.0, 0, 0, 0, 0, 0]
+          }]
+        }
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/getBarInfo'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            var nameList = []
+            var totalMarkList = []
+            var myDate = new Date();//获取系统当前时间
+            for (var x in data.dataMap.Industlist) {
+              nameList.push(data.dataMap.Industlist[x].name)
+              totalMarkList.push(data.dataMap.Industlist[x].totalMark)
+            }
+            option.xAxis[0].data = nameList;
+            option.series[0].data = totalMarkList;
+            option.title.text = "鄂州市各行业绩效" + "(" + myDate.toLocaleDateString() + ")";
+            this.commDispCenterRightBar = echarts.init(document.getElementById('commDisp_center_right'))
+            this.commDispCenterRightBar.setOption(option)
+            window.addEventListener('resize', () => {
+              this.commDispCenterRightBar.resize()
+            })
+            // 行业柱状图点击事件
+            var _this = this
+            this.commDispCenterRightBar.on('click', function (param) {
+              _this.industryName = param.name
+              _this.getIndustryMarkAndRank()
+            })
+          }
+        })
+      },
+      getIndustryMarkAndRank () {
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/selectIndustrySocreRanking'),
+          method: 'get',
+          params: this.$http.adornParams({businessTypeName: this.industryName})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            for (var x in data.list) {
+              this.industryMark = data.list[x].total_mark
+              this.industryRank = data.list[x].rank
+            }
+          }
+        })
+      },
+      getEnterpriseMarkOne () {
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/getEnterpriseMark'),
+          method: 'get',
+          params: this.$http.adornParams({first: 0, last: 10, type: 1})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.manageDataList = data.list
+          }
+        })
+      },
+      getEnterpriseMarkTwo () {
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/getEnterpriseMark'),
+          method: 'get',
+          params: this.$http.adornParams({first: 0, last: 10, type: 2})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.manageDataList2 = data.list
+          }
+        })
+      },
+      getEnterpriseByUnitTypeList () {
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/getEnterpriseByUnitTypeList'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.EnterpriseList = data.list
+          }
+        })
+      },
+      changeEnterprise () {
+        this.$http({
+          url: this.$http.adornUrl('/performance/bsPerformanceTotalMark/selectSocreRanking'),
+          method: 'get',
+          params: this.$http.adornParams({unitId: this.enterpriseId})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            for (var x in data.list) {
+              this.enterpriseMark = data.list[x].total_mark
+              this.enterpriseRank = data.list[x].rank
+            }
+          }
+        })
+      }
+    }
+  }
+</script>
+
+<style>
+  .mod-emerManage{
+    height: 100%;
+  }
+  .perfEval-mo-title {
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 20px;
+    z-index: 1;
+  }
+
+  .perfEval-mo-title p {
+    position: absolute;
+    margin-top: 0px;
+    top: 2px;
+    left: 0px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+  }
+
+  .perfEval-mo-title span {
+    display: inline-block;
+    width: 120px;
+    margin-top: 2px;
+    border-top: 28px solid #21354E;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+  }
+
+  .perfEval-content {
+    width: 100%;
+    height: 560px;
+  }
+
+  .perfEval-up {
+    width: 100%;
+    height: 27%;
+    float: left;
+  }
+
+  .perfEval-up-left {
+    position: relative;
+    width: 15%;
+    height: 100%;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .perfEval-up-left-con {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding-top: 25%;
+    line-height: 30px;
+    float: left;
+  }
+
+  .perfEval-up-left-con-up {
+    color: #127BFF;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .perfEval-up-left-con-center a {
+    color: #FFF;
+    text-decoration: underline;
+  }
+
+  .perfEval-up-left-con-center a:hover {
+    color: #127BFF;
+    text-decoration: underline;
+  }
+
+  .perfEval-up-right {
+    width: 83%;
+    height: 100%;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .perfEval-center {
+    width: 100%;
+    height: 27%;
+    margin-top: 5px;
+    float: left;
+  }
+
+  .perfEval-center-left {
+    position: relative;
+    width: 15%;
+    height: 100%;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .perfEval-center-right {
+    position: relative;
+    width: 83%;
+    height: 100%;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .perfEval-down {
+    width: 100%;
+    height: 44%;
+    margin-top: 5px;
+    float: left;
+  }
+
+  .perfEval-down-left {
+    position: relative;
+    width: 15%;
+    height: 100%;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .perfEval-down-right {
+    position: relative;
+    width: 83%;
+    height: 100%;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .perfEval-down-right-table {
+    width: 49%;
+    height: 100%;
+    margin-left: 7px;
+    float: left;
+  }
+
+  .perfEval-up-left-con-select {
+    width: 100%;
+    height: 50px;
+    text-align: right;
+    color: #199ED8;
+    padding: 0 10% 0 10%;
+  }
+
+  .perfEval-up-left-con-select select {
+    width: 150px;
+    color: #199ED8;
+    border: 2px #FFF solid;
+    background-color: #181E36;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: #001837;
+    width: 100%;
+    height: 100%;
+  }
+
+  table td, th {
+    border: 1px #133050 solid;
+    padding-left: 5px;
+  }
+
+</style>

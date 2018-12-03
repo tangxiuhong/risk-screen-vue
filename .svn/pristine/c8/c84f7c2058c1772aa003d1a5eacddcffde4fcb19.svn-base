@@ -1,0 +1,115 @@
+<!--监测信息-视频监控-->
+<template>
+  <div class="moniInfo-videoMoni-content"  :style="{height: styleHeight}">
+    <div class="moniInfo-videoMoni-left">
+      <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+    </div>
+    <div class="moniInfo-videoMoni-right">
+      <div class="moniInfo-videoMoni-right-left">
+        <div class="moniInfo-videoMoni-right-left-top"></div>
+        <div class="moniInfo-videoMoni-right-left-down">
+          <table cellspacing="0" cellpadding="0" border="0">
+            <tbody>
+            <tr>
+              <td class="tt" style="color:#FFFFFF;">已登录设备</td>
+              <td><select id="ip" class="sel" onchange="getChannelInfo();" style="color:#FFFFFF;background-color:#43516C;border:1px #2E435B solid;"></select></td>
+              <td class="tt" style="color:#FFFFFF;">通道列表</td>
+              <td><select id="channels" class="sel" style="color:#FFFFFF;background-color:#43516C;border:1px #2E435B solid;"></select></td>
+            </tr>
+            </tbody>
+          </table>
+          <div id="mesDiv" style="color: rgb(255, 255, 255);">
+            您的电脑未安装视频控件,<a href="/RiskLargeScreen/static/video/WebComponentsKit.exe">下载安装</a>
+          </div>
+        </div>
+      </div>
+      <div class="moniInfo-videoMoni-right-right">
+        <p>视频备注</p>
+
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    name: 'moniInfo-videoMoni',
+    data () {
+      return {
+        styleHeight: window.screen.availHeight - 60 + 'px',
+        data: [{
+          label: '一级 1',
+          children: [{
+            label: '二级 1-1',
+            children: [{
+              label: '三级 1-1-1'
+            }]
+          }]
+        }, {
+          label: '一级 2',
+          children: [{
+            label: '二级 2-1',
+            children: [{
+              label: '三级 2-1-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }]
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        }
+      }
+    },
+    methods: {
+      handleNodeClick (data) {
+        console.log(data)
+      }
+    }
+  }
+</script>
+
+<style>
+  .moniInfo-videoMoni-content{
+    width: 100%;
+    height: 550px;
+  }
+  .moniInfo-videoMoni-left{
+    width: 19%;
+    height: 100%;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    background-color: #001837;
+    float: left;
+  }
+  .moniInfo-videoMoni-right{
+    width: 79%;
+    height: 100%;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    background-color: #001837;
+    float: left;
+  }
+  .moniInfo-videoMoni-right-left{
+    width: 60%;
+    height: 100%;
+    float: left;
+  }
+  .moniInfo-videoMoni-right-left-top{
+    width: 100%;
+    height: 85%;
+  }
+  .moniInfo-videoMoni-right-left-down{
+    width: 100%;
+    height: 15%;
+  }
+  .moniInfo-videoMoni-right-right{
+    width: 40%;
+    height: 100%;
+    float: left;
+  }
+</style>

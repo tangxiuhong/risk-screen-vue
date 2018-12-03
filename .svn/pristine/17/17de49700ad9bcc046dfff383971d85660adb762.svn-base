@@ -1,0 +1,14 @@
+export function modules () {
+  let modulGround = document.getElementsByClassName('modulGround')
+  for (var i = 0; i < modulGround.length; i++) {
+    if (modulGround[i].getElementsByClassName('modulTitle').length > 0) {
+      modulGround[i].style.paddingTop = '20px'
+    } else {
+      modulGround[i].style.paddingTop = '0px'
+    }
+  }
+}
+
+export function moduleHeight () {
+  $('.site-content__wrapper').height(-20)
+}

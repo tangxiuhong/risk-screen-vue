@@ -1,0 +1,554 @@
+<template>
+  <el-dialog
+    fullscreen
+    append-to-body
+    :visible.sync="Visible">
+    <div class="mod-tableList">
+      <el-table
+        :data="dataList"
+        border
+        v-loading="dataListLoading"
+        @selection-change="selectionChangeHandle"
+        style="width: 100%;">
+        <el-table-column
+          prop="enterpriseName"
+          header-align="center"
+          align="center"
+          label="企业名称">
+        </el-table-column>
+        <el-table-column
+          prop="contactAddress"
+          header-align="center"
+          align="center"
+          label="通讯地址">
+        </el-table-column>
+        <el-table-column
+          prop="enterpriseId"
+          header-align="center"
+          align="center"
+          label="企业编号">
+        </el-table-column>
+        <el-table-column
+          prop="safePerson"
+          header-align="center"
+          align="center"
+          label="安全部门负责人">
+        </el-table-column>
+        <el-table-column
+          prop="safePersonMobile"
+          header-align="center"
+          align="center"
+          label="电话">
+        </el-table-column>
+        <el-table-column
+          prop="varName4"
+          header-align="center"
+          align="center"
+          label="街道/社区">
+        </el-table-column>
+        <el-table-column
+          prop="regulatorName"
+          header-align="center"
+          align="center"
+          label="主管部门">
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="sizeChangeHandle"
+        @current-change="currentChangeHandle"
+        :current-page="pageIndex"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="pageSize"
+        :total="totalPage"
+        layout="total, sizes, prev, pager, next, jumper">
+      </el-pagination>
+    </div>
+  </el-dialog>
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        Visible: false,
+        dataList: [],
+        pageIndex: 1,
+        pageSize: 10,
+        totalPage: 0,
+        dataListLoading: false,
+        dataListSelections: [],
+        areaCode: '',
+        industryCode: '',
+        isRegist: 0,
+        state: 0
+      }
+    },
+    mounted () {
+    },
+    methods: {
+      /**
+       * @param flag 1 区域、行业企业 2 申报隐患 3 未申报隐患企业
+       * 4 重大隐患企业 5 一般隐患企业
+       * 6 申报重大隐患企业 7 逾期未整改重大隐患企业
+       * 8 申报一般隐患企业 9 逾期未整改一般隐患企业
+       * @param type 0 区域 1 行业
+       * @param code 区域ID、行业ID
+       */
+      init (flag, type, code) {
+        this.Visible = true
+        if (flag === 1) {
+          if (type === 0) {
+            this.areaCode = code
+            this.getAreaDataList()
+          } else if (type === 1) {
+            this.industryCode = code
+            this.getIndustryDataList()
+          }
+        } else if (flag === 2) {
+          if (type === 0) {
+            this.areaCode = code
+            this.getAreaDeclareHiddenDataList()
+          } else if (type === 1) {
+            this.industryCode = code
+            this.getIndustryDeclareHiddenDataList()
+          }
+        } else if (flag === 3) {
+          if (type === 0) {
+            this.areaCode = code
+            this.getAreaUndeclaredHiddenDataList()
+          } else if (type === 1) {
+            this.industryCode = code
+            this.getIndustryUndeclaredHiddenDataList()
+          }
+        } else if (flag === 4) {
+          if (type === 0) {
+            this.state = 0
+            this.areaCode = code
+            this.getAreaMajorHiddenEnterpriseDataList()
+          } else if (type === 1) {
+            this.state = 0
+            this.industryCode = code
+            this.getIndustryMajorHiddenEnterpriseDataList()
+          }
+        } else if (flag === 5) {
+          if (type === 0) {
+            this.state = 0
+            this.areaCode = code
+            this.getAreaHiddenEnterpriseDataList()
+          } else if (type === 1) {
+            this.state = 0
+            this.industryCode = code
+            this.getIndustryHiddenEnterpriseDataList()
+          }
+        } else if (flag === 6) {
+          // 申报重大隐患企业
+          if (type === 0) {
+            this.areaCode = code
+            this.getAreaSbMajorHiddenUnitDataList()
+          } else if (type === 1) {
+            this.industryCode = code
+            this.getIndustrySbHiddenUnitDataList()
+          }
+        } else if (flag === 7) {
+          // 逾期未整改重大隐患企业
+          if (type === 0) {
+            this.state = 1
+            this.areaCode = code
+            this.getAreaMajorHiddenEnterpriseDataList()
+          } else if (type === 1) {
+            this.state = 1
+            this.industryCode = code
+            this.getIndustryMajorHiddenEnterpriseDataList()
+          }
+        } else if (flag === 8) {
+          // 申报一般隐患企业
+          if (type === 0) {
+            this.areaCode = code
+            this.getAreaSbMajorHiddenUnitDataList()
+          } else if (type === 1) {
+            this.industryCode = code
+            this.getIndustrySbHiddenUnitDataList()
+          }
+        } else if (flag === 9) {
+          // 逾期未整改一般隐患企业
+          if (type === 0) {
+            this.state = 1
+            this.areaCode = code
+            this.getAreaHiddenEnterpriseDataList()
+          } else if (type === 1) {
+            this.state = 1
+            this.industryCode = code
+            this.getIndustryHiddenEnterpriseDataList()
+          }
+        }
+      },
+      // 获取数据列表
+      getAreaDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/enterprise/sysEnterprise/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'areaCode': this.areaCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      getIndustryDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/enterprise/sysEnterprise/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'industryCode': this.industryCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 区域隐患申报企业
+      getAreaDeclareHiddenDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/declareHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'areaCode': this.areaCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 行业隐患申报企业
+      getIndustryDeclareHiddenDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/declareHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'industryCode': this.industryCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+       // 区域未申报隐患企业
+      getAreaUndeclaredHiddenDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/undeclaredHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'areaCode': this.areaCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 行业未申报隐患企业
+      getIndustryUndeclaredHiddenDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/undeclaredHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'industryCode': this.industryCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 区域重大隐患企业
+      getAreaMajorHiddenEnterpriseDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/majorHiddenList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'areaCode': this.areaCode,
+            'state': this.state
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 行业重大隐患企业
+      getIndustryMajorHiddenEnterpriseDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/majorHiddenList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'industryCode': this.industryCode,
+            'state': this.state
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 区域一般隐患企业
+      getAreaHiddenEnterpriseDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/hiddenList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'areaCode': this.areaCode,
+            'state': this.state
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 行业一般隐患企业
+      getIndustryHiddenEnterpriseDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/hiddenList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'industryCode': this.industryCode,
+            'state': this.state
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+
+      // 区域申报重大隐患企业
+      getAreaSbMajorHiddenUnitDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/declareMajorHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'areaCode': this.areaCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 行业申报重大隐患企业
+      getIndustrySbMajorHiddenUnitDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/declareMajorHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'industryCode': this.industryCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+
+      // 区域申报一般隐患企业
+      getAreaSbHiddenUnitDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/declareCommonlyHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'areaCode': this.areaCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 行业申报一般隐患企业
+      getIndustrySbHiddenUnitDataList() {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCompany/declareCommonlyHiddenUnitList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'isRegist': this.isRegist,
+            'industryCode': this.industryCode
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      // 每页数
+      sizeChangeHandle (val) {
+        this.pageSize = val
+        this.pageIndex = 1
+        this.getDataList()
+      },
+      // 当前页
+      currentChangeHandle (val) {
+        this.pageIndex = val
+        this.getDataList()
+      },
+      // 多选
+      selectionChangeHandle (val) {
+        this.dataListSelections = val
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  .mod-tableList {
+    color: #fff;
+    & .table-responsive {
+      width: 100%;
+      & td {
+        white-space: nowrap;
+      }
+      & .item {
+        background: #042141;
+        line-height: 2em;
+      }
+      & #context{
+        & tr{
+          border-bottom: 1px solid #fff;
+          line-height: 2em;
+        }
+        :hover{
+          background: rgba(255,255,255,.1);
+        }
+      }
+    }
+  }
+</style>

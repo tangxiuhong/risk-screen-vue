@@ -1,0 +1,737 @@
+<template>
+  <div>
+    <el-row>
+      <el-col>
+        <!--内容区标题公共样式contentTitle，contentImg，contentTxt-->
+        <div class="modTitleBox">
+          <div class="modTitle">
+            <span class="modImg"><img src="../../../assets/img/modules/commDisp.png" alt=""></span>
+            <span class="modTxt">指挥调度信息</span>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <!--内容区域-->
+    <div class="commDisp-content" :style="{height: styleHeight}">
+      <div class="commDisp-up">
+        <!--风险管控与隐患治理-->
+        <div class="commDisp-up-left">
+          <!--标题-->
+          <div class="commDisp-mo-title">
+            <small
+              style="background: #3ea1ff; font-size:10px; padding: 0 4px; height: 20px; line-height: 22px; -webkit-border-radius: 50px;-moz-border-radius: 50px;border-radius: 50px; margin-left: 5px; position: absolute; right: 17%; top: 20%;">
+              {{areaName}}
+            </small>
+            <span>
+              <p>风险管控与隐患治理</p>
+            </span>
+          </div>
+          <div class="commDisp-up-left-con">
+            <div class="commDisp-up-left-con-rigth">
+              <div class="commDisp-up-left-con-rigth-up-down">
+                <div class="commDisp-up-left-con-rigth-mo">
+                  <div class="commDisp-up-left-con-rigth-mo-title">
+                    上月风险总数<span>{{RiskNum1}}</span>条
+                  </div>
+                  <div class="commDisp-up-left-con-rigth-mo-pie" id="pie1"></div>
+                </div>
+                <div class="commDisp-up-left-con-rigth-mo">
+                  <div class="commDisp-up-left-con-rigth-mo-title">
+                    当月风险总数<span>{{RiskNum2}}</span>条
+                  </div>
+                  <div class="commDisp-up-left-con-rigth-mo-pie" id="pie2"></div>
+                </div>
+              </div>
+              <div class="commDisp-up-left-con-rigth-up-down">
+                <div class="commDisp-up-left-con-rigth-mo">
+                  <div class="commDisp-up-left-con-rigth-mo-title">
+                    上月隐患总数<span>{{TroubleNum1}}</span>条
+                  </div>
+                  <div class="commDisp-up-left-con-rigth-mo-pie" id="pie3"></div>
+                </div>
+                <div class="commDisp-up-left-con-rigth-mo">
+                  <div class="commDisp-up-left-con-rigth-mo-title">
+                    当月隐患总数<span>{{TroubleNum2}}</span>条
+                  </div>
+                  <div class="commDisp-up-left-con-rigth-mo-pie" id="pie4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--10月区街风险/隐患-->
+        <div class="commDisp-up-right">
+          <!--标题-->
+          <div class="commDisp-mo-title">
+            <span><p @click="districtStreet()" style="cursor:pointer;">{{time}}月区街风险/隐患一览图</p></span>
+          </div>
+          <div class="commDisp-up-right-con" id="commDisp_up_right"></div>
+        </div>
+      </div>
+      <!--10月行业风险/隐患-->
+      <div class="commDisp-down">
+        <!--标题-->
+        <div class="commDisp-mo-title">
+          <span><p @click="industry()" style="cursor:pointer;">{{time}}月行业风险/隐患一览图</p></span>
+        </div>
+        <div class="commDisp-down-con" id="commDisp_down_right"></div>
+      </div>
+    </div>
+    <districtStreetTab v-if="districtStreetTabVisible" ref="districtStreetTab"></districtStreetTab>
+    <industryTab v-if="industryTabVisible" ref="industryTab"></industryTab>
+  </div>
+</template>
+
+<script>
+  import echarts from 'echarts'
+  import districtStreetTab from './commDisp-distStreetTab'
+  import industryTab from './commDisp-industryTab'
+
+  export default {
+    data() {
+      return {
+        styleHeight: window.screen.availHeight - 108 + 'px',
+        areaName: '鄂城区',
+        time: '',
+        RiskNum1: '',
+        RiskControlNum1: '',
+        TroubleNum1: '',
+        TroubleReformNum1: '',
+        RiskNum2: '',
+        RiskControlNum2: '',
+        TroubleNum2: '',
+        TroubleReformNum2: '',
+        Pie1: null,
+        Pie2: null,
+        Pie3: null,
+        Pie4: null,
+        CommDispUpRightBar: null,
+        commDispDownRightBar: null,
+        districtStreetTabVisible: false,
+        industryTabVisible: false
+      }
+    },
+    components: {
+      districtStreetTab, industryTab
+    },
+    mounted() {
+      this.initCommDispUpRightBar()
+      this.initUpPie()
+    },
+    activated() {
+      // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
+      if (this.CommDispUpRightBar) {
+        this.CommDispUpRightBar.resize()
+      }
+      if (this.commDispDownRightBar) {
+        this.commDispDownRightBar.resize()
+      }
+      if (this.Pie1) {
+        this.Pie1.resize()
+      }
+      if (this.Pie2) {
+        this.Pie2.resize()
+      }
+      if (this.Pie3) {
+        this.Pie3.resize()
+      }
+      if (this.Pie4) {
+        this.Pie4.resize()
+      }
+    },
+    methods: {
+      // 区街柱状图
+      initCommDispUpRightBar() {
+        var color = [
+          [
+            ['#355261'], ['#00B89D'], ['#6F6E6C'], ['#F8AF49']
+          ],
+          ['#ffffff'], ['#3ea1ff'], ['#FECD33'], ['#FF6332', 'transparent'], ['#515D73']
+        ]
+//        数据
+        var data = [['鄂城区', '华容区', '梁子湖区', '葛店经济开发区', ' 鄂州经济开发区', '西山街办', '凤凰街办', '古楼街办', '花湖经济开发区', '三江港新区', '梧桐湖新区', '鄂城新区', '红莲湖新区'],
+          ['上月隐患', '当月隐患', '上月风险', '当月风险'],
+          [' 非煤矿山', ' 石油化工、烟花爆竹', '民爆物品', ' 城乡建设管理', '综合交通运输', ' 特种设备', ' 消防安全', ' 工业(含四大行业)', ' 油气输送管道 ', ' 校园(含校车)', ' 医疗卫生', ' 文体广电', ' 旅游', '  商贸(含成品油)', '  国土(含地质灾害) ', '  老旧危房(含社区物业)', '水利', '快递邮递', '民政、社会福利事业', '渔业'],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4, 4, 6, 7, 2, 4, 8, 5],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4, 6, 2, 8, 4, 8, 3, 4],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4, 6, 2, 8, 4, 8, 3, 4],
+          [1, 6, 8, 4, 6, 8, 3, 5, 5, 3, 4, 6, 4, 6, 2, 8, 4, 8, 3, 4]
+        ]
+        var option = {
+          color: ['#62a8ea', '#3583ca', '#fbce9d', '#e98f2e'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          legend: {
+            show: true,
+            data: data[1],
+            left: 'right',
+            textStyle: {
+              color: color[1],
+              fontSize: 15
+            }
+          },
+          grid: {
+            top: '15%',
+            left: '1%',
+            right: '1%',
+            bottom: '10%',
+            containLabel: true
+          },
+          xAxis: [{
+            type: 'category',
+            data: data[0],
+            axisTick: { // 决定是否显示坐标刻度
+              show: false
+            },
+            splitLine: {show: false}, // 网格线
+            splitArea: {show: false}, // 网格区域
+            axisLine: {
+              show: false
+            },
+            axisLabel: {
+              textStyle: {
+                fontSize: 13,
+                color: '#fff'// 坐标值得具体的颜色
+              },
+              interval: 0,
+              rotate: 18
+            }
+          }],
+          yAxis: [{
+            type: 'value',
+            name: '数量',
+            axisTick: { // 决定是否显示坐标刻度
+              show: false
+            },
+            splitLine: {
+              show: false
+            }, // 网格线
+            splitArea: {
+              show: false
+            }, // 网格区域
+            axisLine: {
+              lineStyle: {
+                color: '#fff'
+              },
+              show: false
+            }, // 坐标轴
+            axisLabel: {
+              textStyle: {
+                fontSize: 12,
+                color: '#fff'
+              }
+            }
+          }],
+          series: [
+            {
+              name: '上月隐患',
+              type: 'bar',
+              data: [403, 46, 374, 380, 837, 1915, 703, 993, 2064, 1531, 200, 131, 18]
+
+            },
+            {
+              name: '当月隐患',
+              type: 'bar',
+              data: [439, 65, 436, 223, 781, 1904, 683, 1224, 1935, 1577, 138, 100, 15]
+
+            },
+            {
+              name: '上月风险',
+              type: 'bar',
+              data: [8, 11, 8, 8, 13, 25, 16, 13, 20, 7, 10, 11, 13]
+
+            },
+            {
+              name: '当月风险',
+              type: 'bar',
+              data: [25, 35, 25, 25, 40, 74, 49, 40, 59, 20, 30, 35, 40]
+
+            }
+          ]
+        }
+        this.$http({
+          url: this.$http.adornUrl('/command/commandInfo/getBarInfo'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            for (var x in data.dataMap.townList) {
+              option.series[0].data[x] = data.dataMap.townList[x].lMonthTroubleNum
+              option.series[1].data[x] = data.dataMap.townList[x].cMonthTroubleNum
+              option.series[2].data[x] = data.dataMap.townList[x].lMonthRiskNum
+              option.series[3].data[x] = data.dataMap.townList[x].cMonthRiskNum
+              option.xAxis[0].data[x] = data.dataMap.townList[x].name
+            }
+            var myDate = new Date()
+            if (myDate.getMonth() === 0) {
+              this.time = 1
+            } else {
+              this.time = myDate.getMonth() + 1
+            }
+            this.CommDispUpRightBar = echarts.init(document.getElementById('commDisp_up_right'))
+            this.CommDispUpRightBar.setOption(option)
+            window.addEventListener('resize', () => {
+              this.CommDispUpRightBar.resize()
+            })
+            // 区域柱状图点击事件
+            var _this = this
+            this.CommDispUpRightBar.on('click', function (param) {
+              _this.areaName = param.name
+              _this.initUpPie()
+            })
+          }
+        })
+
+        var option1 = {
+          color: ['#62a8ea', '#3583ca', '#fbce9d', '#e98f2e'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          legend: {
+            show: true,
+            data: data[1],
+            left: 'right',
+            textStyle: {
+              color: color[1],
+              fontSize: 15
+            }
+          },
+          grid: {
+            top: '15%',
+            left: '1%',
+            right: '1%',
+            bottom: '10%',
+            containLabel: true
+          },
+          xAxis: [{
+            type: 'category',
+            data: [' 工业(含四大行业) ', ' 石油化工、烟花爆竹', '非煤矿山', '城乡建设管理', '综合交通运输', '消防安全 ', ' 民爆物品', '特种设备', '油气输送管道 ', '校园(含校车)', '医疗卫生', '文体广电 ', '旅游 ', '商贸(含成品油)', '国土(含地质灾害)', '老旧危房(含社区物业)', '水利', '快递邮递', '民政、社会福利事业', ' 渔业'],
+            axisTick: { // 决定是否显示坐标刻度
+              show: false
+            },
+            splitLine: {show: false}, // 网格线
+            splitArea: {show: false}, // 网格区域
+            axisLine: {
+              show: false
+            },
+            axisLabel: {
+              textStyle: {
+                fontSize: 13,
+                color: '#fff'// 坐标值得具体的颜色
+              },
+              interval: 0,
+              rotate: 18
+            }
+          }],
+          yAxis: [{
+            type: 'value',
+            name: '数量',
+            axisLine: {
+              lineStyle: {
+                color: '#fff'
+              },
+              show: false
+            },
+            axisTick: { // 决定是否显示坐标刻度
+              show: false
+            },
+            splitLine: {
+              show: false
+            }, // 网格线
+            splitArea: {
+              show: false
+            }, // 网格区域
+            axisLabel: {
+              textStyle: {
+                fontSize: 12,
+                color: '#fff'
+              }
+            }
+          }],
+          series: [
+            {
+              name: '上月隐患',
+              type: 'bar',
+              data: [5401, 609, 497, 285, 60, 1581, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+            },
+            {
+              name: '当月隐患',
+              type: 'bar',
+              data: [5356, 637, 535, 269, 45, 1696, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+            },
+            {
+              name: '上月风险',
+              type: 'bar',
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+            },
+            {
+              name: '当月风险',
+              type: 'bar',
+              data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            }
+          ]
+        }
+        this.$http({
+          url: this.$http.adornUrl('/command/commandInfo/getBarInfo'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            for (var x in data.dataMap.townList) {
+              option1.series[0].data[x] = data.dataMap.businessTypeList[x].lMonthTroubleNum
+              option1.series[1].data[x] = data.dataMap.businessTypeList[x].cMonthTroubleNum
+              option1.series[2].data[x] = data.dataMap.businessTypeList[x].lMonthRiskNum
+              option1.series[3].data[x] = data.dataMap.businessTypeList[x].cMonthRiskNum
+              option1.xAxis[0].data[x] = data.dataMap.businessTypeList[x].name
+            }
+            this.commDispDownRightBar = echarts.init(document.getElementById('commDisp_down_right'))
+            this.commDispDownRightBar.setOption(option1)
+            window.addEventListener('resize', () => {
+              this.commDispDownRightBar.resize()
+            })
+          }
+        })
+      },
+
+      initUpPie() {
+        var color = [
+          [
+            ['#355261'], ['#00B89D'], ['#6F6E6C'], ['#F8AF49']
+          ],
+          ['#ffffff'], ['#3ea1ff'], ['#FECD33'], ['#FF6332', 'transparent'], ['#515D73']
+        ]
+        var riskPieoption = {
+          title: {
+            text: '管控风险:164条',
+            x: '50%',
+            y: '40%',
+            textAlign: 'center',
+            textStyle: {
+              fontWeight: 'normal',
+              fontSize: 14,
+              color: color[1]
+            },
+            subtextStyle: {
+              color: color[2]
+            }
+          },
+          grid: {
+            top: '15%',
+            left: '1%',
+            right: '1%',
+            bottom: '10%',
+            containLabel: true
+          },
+          tooltip: {
+            formatter: '{a} <br/>{b} : {c}%'
+          },
+          series: [
+            {
+              name: '',
+              type: 'gauge',
+              center: ['50%', '50%'], // 默认全局居中
+              radius: '100%',
+              axisLine: {
+                show: false,
+                lineStyle: { // 属性lineStyle控制线条样式
+                  color: [
+                    [0.8, '#FECD33'],
+                    [1, '#FF6332']
+                  ],
+                  width: 10
+                }
+              },
+              splitLine: {
+                show: false
+              },
+              axisTick: {
+                show: false
+              },
+              axisLabel: {
+                show: false
+              },
+              pointer: {
+                show: false,
+                length: '0',
+                width: '0'
+              },
+              detail: {
+                formatter: '{value}%',
+                offsetCenter: [0, '40%'],
+                textStyle: {
+                  color: '#3ea1ff',
+                  fontWeight: 'bold',
+                  fontSize: 18
+                }
+              },
+              data: [{
+                value: 80,
+                label: {
+                  textStyle: {
+                    fontSize: 12
+                  }
+                }
+              }]
+            }
+          ]
+        }
+        this.$http({
+          url: this.$http.adornUrl('/command/commandInfo/getRiskInfo1'),
+          method: 'get',
+          params: this.$http.adornParams({name: this.areaName})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.RiskNum1 = data.dataMap.RiskNum
+            this.RiskControlNum1 = data.dataMap.RiskControlNum
+            this.TroubleNum1 = data.dataMap.TroubleNum
+            this.TroubleReformNum1 = data.dataMap.TroubleReformNum
+
+            var value = 100
+            var value1 = 1
+            if (this.RiskNum1 !== 0) { // 判断分母不能为0;
+              value = Math.round(this.RiskControlNum1 / this.RiskNum1 * 10000) / 100.00
+              value1 = Math.round(this.RiskControlNum1 / this.RiskNum1 * 10000) / 10000.00
+            }
+            riskPieoption.title.text = '管控风险:' + this.RiskControlNum1 + '条'
+            riskPieoption.series[0].axisLine.lineStyle.color[0] = [value1, '#FECD33']
+            riskPieoption.series[0].data[0].value = value
+
+            this.Pie1 = echarts.init(document.getElementById('pie1'))
+            this.Pie1.setOption(riskPieoption)
+            if (this.TroubleNum1 !== 0) { // 判断分母不能为0
+              value = Math.round(this.TroubleReformNum1 / this.TroubleNum1 * 10000) / 100.00
+              value1 = Math.round(this.TroubleReformNum1 / this.TroubleNum1 * 10000) / 10000.00
+            }
+            riskPieoption.title.text = '整改隐患:' + this.TroubleReformNum1 + '条'
+            riskPieoption.series[0].axisLine.lineStyle.color[0] = [value1, '#FECD33']
+            riskPieoption.series[0].data[0].value = value
+            this.Pie3 = echarts.init(document.getElementById('pie3'))
+            this.Pie3.setOption(riskPieoption)
+            window.addEventListener('resize', () => {
+              this.Pie1.resize()
+            })
+            window.addEventListener('resize', () => {
+              this.Pie3.resize()
+            })
+          }
+        })
+
+        this.$http({
+          url: this.$http.adornUrl('/command/commandInfo/getRiskInfo2'),
+          method: 'get',
+          params: this.$http.adornParams({name: this.areaName})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.RiskNum2 = data.dataMap.RiskNum
+            this.RiskControlNum2 = data.dataMap.RiskControlNum
+            this.TroubleNum2 = data.dataMap.TroubleNum
+            this.TroubleReformNum2 = data.dataMap.TroubleReformNum
+
+            var value = 100
+            var value1 = 1
+            if (this.RiskNum2 !== 0) { // 判断分母不能为0;
+              value = Math.round(this.RiskControlNum2 / this.RiskNum2 * 10000) / 100.00
+              value1 = Math.round(this.RiskControlNum2 / this.RiskNum2 * 10000) / 10000.00
+            }
+            riskPieoption.title.text = '管控风险:' + this.RiskControlNum2 + '条'
+            riskPieoption.series[0].axisLine.lineStyle.color[0] = [value1, '#FECD33']
+            riskPieoption.series[0].data[0].value = value
+            this.Pie2 = echarts.init(document.getElementById('pie2'))
+            this.Pie2.setOption(riskPieoption)
+            if (this.TroubleNum2 !== 0) {
+              value = Math.round(this.TroubleReformNum2 / this.TroubleNum2 * 10000) / 100.00
+              value1 = Math.round(this.TroubleReformNum2 / this.TroubleNum2 * 10000) / 10000.00
+            }
+            riskPieoption.title.text = '整改隐患:' + this.TroubleReformNum2 + '条'
+            riskPieoption.series[0].axisLine.lineStyle.color[0] = [value1, '#FECD33']
+            riskPieoption.series[0].data[0].value = value
+            this.Pie4 = echarts.init(document.getElementById('pie4'))
+            this.Pie4.setOption(riskPieoption)
+            window.addEventListener('resize', () => {
+              this.Pie2.resize()
+            })
+            window.addEventListener('resize', () => {
+              this.Pie4.resize()
+            })
+          }
+        })
+      },
+      // 右上标题——区街风险隐患一览
+      districtStreet() {
+        this.districtStreetTabVisible = true
+        this.$nextTick(() => {
+          this.$refs.districtStreetTab.init()
+        })
+      },
+      // 标题——行业风险隐患
+      industry() {
+        this.industryTabVisible = true
+        this.$nextTick(() => {
+          this.$refs.industryTab.init()
+        })
+      }
+    }
+  }
+</script>
+
+<style>
+  .commDisp-page-title {
+    width: 100%;
+    padding: 0 5px;
+    height: 30px;
+    background-color: #181E36;
+  }
+
+  .commDisp-page-title-img {
+    margin-left: 30px;
+    width: 25px;
+    height: 25px;
+    margin-bottom: 3px;
+  }
+
+  .commDisp-page-title span {
+    font-size: 20px;
+    font-weight: bold;
+    color: #F6D650;
+    background-image: -webkit-linear-gradient(top, #181E36, #073580 20%);
+  }
+
+  .commDisp-mo-title {
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 18px;
+    z-index: 1;
+  }
+
+  .commDisp-mo-title p {
+    position: absolute;
+    margin-top: 0px;
+    top: 3px;
+    left: 0px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+  }
+
+  .commDisp-mo-title span {
+    display: inline-block;
+    width: 240px;
+    margin-top: 2px;
+    border-top: 28px solid #21354E;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+  }
+
+  .commDisp-content {
+    width: 100%;
+    height: 560px;
+  }
+
+  .commDisp-up {
+    width: 100%;
+    height: 54%;
+  }
+
+  .commDisp-up-left {
+    position: relative;
+    width: 29%;
+    height: 100%;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .commDisp-up-left-con {
+    width: 100%;
+    height: 100%;
+    padding-top: 30px;
+  }
+
+  .commDisp-up-left-con-rigth {
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+    float: left;
+  }
+
+  .commDisp-up-left-con-rigth-up-down {
+    width: 100%;
+    height: 50%;
+    float: left;
+  }
+
+  .commDisp-up-left-con-rigth-mo {
+    width: 50%;
+    height: 100%;
+    float: left;
+  }
+
+  .commDisp-up-left-con-rigth-mo-title {
+    width: 100%;
+    height: 15%;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: Center;
+  }
+
+  .commDisp-up-left-con-rigth-mo-title span {
+    font-size: 20px;
+    color: #FBCA32;
+  }
+
+  .commDisp-up-left-con-rigth-mo-pie {
+    width: 100%;
+    height: 85%;
+  }
+
+  .commDisp-up-right {
+    position: relative;
+    width: 69.5%;
+    height: 100%;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .commDisp-up-right-con {
+    width: 100%;
+    height: calc(100% - 40px);
+    margin-top: 40px;
+  }
+
+  .commDisp-down {
+    position: relative;
+    width: 98.8%;
+    height: 45%;
+    margin-top: 5px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+  }
+
+  .commDisp-down-con {
+    width: 100%;
+    height: calc(100% - 40px);
+    margin-top: 40px;
+  }
+</style>

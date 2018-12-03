@@ -1,0 +1,984 @@
+<template>
+  <el-dialog
+    fullscreen
+    :visible.sync="visible">
+    <!--内容区域-->
+    <div class="riskDynaAnal-content" :style="{height: styleHeight}">
+      <!--上-->
+      <div class="riskDynaAnal-up">
+        <div class="riskDynaAnal-up-left">
+          <div class="riskDynaAnal-up-left-up">{{dataForm.enterpriseName}}</div>
+          <div class="riskDynaAnal-up-left-down">
+            <div class="riskDynaAnal-up-left-down-left" id="up_left_down_left"></div>
+            <div class="riskDynaAnal-up-left-down-right">
+              <div style="font-weight: normal; text-align: right; padding-right:20%;">当前风险等级：</div>
+              <div class="riskDynaAnal-up-left-down-right-color" :style="{color:colorTxt}">{{riskLevelColor}}</div>
+              <div class="riskDynaAnal-up-left-down-right-arrow">
+                <img src="../../../assets/img/modules/riskDynaAnal-arrow-blue.png"></div>
+            </div>
+          </div>
+        </div>
+        <div class="riskDynaAnal-up-other">
+          <!--标题-->
+          <div class="riskDynaAnal-mo-title-3">
+            <span><p>监测预警</p></span>
+          </div>
+          <div class="riskDynaAnal-up-other-left" id="up_other_left"></div>
+          <div class="riskDynaAnal-up-other-rigth">
+            <div class="riskDynaAnal-up-other-rigth-mode">
+              <div class="riskDynaAnal-up-other-rigth-up">实时监测 {{sensorCount}}</div>
+              <div class="riskDynaAnal-up-other-rigth-center"></div>
+              <div class="riskDynaAnal-up-other-rigth-down">视频监测 {{videoCount}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="riskDynaAnal-up-other">
+          <!--标题-->
+          <div class="riskDynaAnal-mo-title-3">
+            <span><p>固有风险评估</p></span>
+          </div>
+          <div class="riskDynaAnal-up-other-bar" id="up_right_bar"></div>
+        </div>
+      </div>
+
+      <div class="riskDynaAnal-down">
+        <div class="riskDynaAnal-down-left">
+          <div class="riskDynaAnal-down-left-up">
+            <!--标题-->
+            <div class="riskDynaAnal-mo-title-4">
+              <span><p>天气环境</p></span>
+            </div>
+            <!---->
+            <div class="riskDynaAnal-down-left-up-con">
+              <div class="riskDynaAnal-down-left-up-con-down">
+                <div class="riskDynaAnal-down-left-up-con-down-left">
+                  <div style="margin-bottom: 15px;">鄂州</div>
+                  <div class="riskDynaAnal-down-left-up-con-center">
+                    <div class="weatherAlarmInfo">{{weatherAlarmInfo}}</div>
+                  </div>
+                  <div style="font-size: 60px;font-weight: bold; position: relative; margin-top: 25px;">
+                    <span>{{airTemperature}}</span>
+                    <span
+                      style="font-size: 20px; line-height: 1em; position: absolute; left: auto; top: 0; z-index: 10;">℃</span>
+                  </div>
+
+                </div>
+                <div class="riskDynaAnal-down-left-up-con-down-right">
+                  <div style="margin-bottom: 15px;">{{weatherUpdateTime}} 更新</div>
+                  <div class="riskDynaAnal-down-left-up-con-down-right-top">
+                    <span
+                      style="background-color: #F9DA65;border-radius: 10px; padding: 2px 5px;">{{weatherAqiInfo}}</span>
+                  </div>
+                  <div class="riskDynaAnal-down-left-up-con-down-right-center">
+                    <div>{{weatherInfo}}</div>
+                    <div>相对湿度 {{relativeHumidity}}%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="riskDynaAnal-down-left-down">
+            <!--标题-->
+            <div class="riskDynaAnal-mo-title-4">
+              <span><p>风险防控提示</p></span>
+            </div>
+            <div class="riskDynaAnal-down-left-down-down">
+              <div class="riskDynaAnal-down-left-down-left">火灾</div>
+              <div class="riskDynaAnal-down-left-down-right"><img
+                src="../../../assets/img/modules/riskDynaAnal-fire.png"></div>
+            </div>
+          </div>
+        </div>
+        <div class="riskDynaAnal-down-other">
+          <!--标题-->
+          <div class="riskDynaAnal-mo-title-4">
+            <span><p>隐患治理情况</p></span>
+          </div>
+          <div class="riskDynaAnal-down-other-left">
+            <ul>
+              <li><img src="../../../assets/img/modules/riskDynaAnal-circle-blue.png">一般隐患升为重大隐患：{{hiddenUpMajorHiddenCount}}条
+              </li>
+              <li><img src="../../../assets/img/modules/riskDynaAnal-circle-blue1.png">逾期未整改的重大隐患：{{unRectifyMajorHiddenCount}}条
+              </li>
+              <li><img src="../../../assets/img/modules/riskDynaAnal-circle-orange.png">15天未登记一般隐患企业：{{invesaccDateFlag}}
+              </li>
+              <li><img src="../../../assets/img/modules/riskDynaAnal-circle-roseo.png">15天未进行必须检查项目：{{checkDateFlag}}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="riskDynaAnal-down-other">
+          <!--标题-->
+          <div class="riskDynaAnal-mo-title-4">
+            <span><p>管理及其他风险</p></span>
+          </div>
+          <div class="riskDynaAnal-down-other-rigth">
+            <div class="riskDynaAnal-down-other-rigth-title">安全责任事故</div>
+            <div class="riskDynaAnal-down-other-rigth-con">
+              <table class="tabDynaAnal">
+                <thead>
+                <th>发生时间</th>
+                <th>事故标题</th>
+                <th>事故等级</th>
+                </thead>
+                <tbody id="down_other_rigth">
+                <tr class="trList" v-for="item in manageList.slice(0, 6)">
+                  <td>{{item.date}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.level}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="riskDynaAnal-down-other">
+          <!--标题-->
+          <div class="riskDynaAnal-mo-title-4">
+            <span><p>大数据因子</p></span>
+          </div>
+          <div class="riskDynaAnal-down-other-rigth">
+            <div class="riskDynaAnal-down-other-rigth-title">同行业事故</div>
+            <div class="riskDynaAnal-down-other-rigth-con">
+              <table class="tabDynaAnal">
+                <thead>
+                <th>发生时间</th>
+                <th>事故标题</th>
+                <th>事故等级</th>
+                </thead>
+                <tbody id="down_other_rigth">
+                <tr class="trList" v-for="item in accidentBigList.slice(0, 6)">
+                  <td>{{item.date}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.level}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </el-dialog>
+
+</template>
+
+<script>
+  import echarts from 'echarts'
+  import {getUUID} from '@/utils'
+
+  export default {
+    data () {
+      return {
+        dataForm: {
+          id: '',
+          enterpriseName: ''
+        },
+        colorTxt: '',
+        selectList: false,
+        styleHeight: window.screen.availHeight + 'px',
+        options: [],
+        userId: '',
+        webSocket: null,
+        riskLevel: 0,
+        riskLevelColor: '',
+        riskLevelName: '',
+        riskPieArr: [],
+        level1: 0,
+        level2: 0,
+        level3: 0,
+        level4: 0,
+        sensorCount: 0,
+        videoCount: 0,
+        sensorPieArr: [],
+        hiddenUpMajorHiddenCount: 0,
+        unRectifyMajorHiddenCount: 0,
+        invesaccDateCount: 0,
+        invesaccDateFlag: '否',
+        checkDateCount: 0,
+        checkDateFlag: '否',
+        weather: null,
+        weatherUpdateTime: '00:00',
+        airTemperature: 0,
+        relativeHumidity: 0,
+        weatherInfo: '',
+        weatherAqiInfo: '',
+        weatherAlarmInfo: '',
+        manageList: [],
+        accidentBigList: [],
+        visible: false
+      }
+    },
+    created () {
+      // 页面刚进入时开启长连接
+      this.initWebSocket()
+    },
+    destroyed: function () {
+      // 页面销毁时关闭长连接
+      this.webSocketClose()
+    },
+    methods: {
+      initWebSocket (id) {
+        this.visible = true
+        this.dataForm.id = id
+        this.$http({
+          url: this.$http.adornUrl('/sys/user/info'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.userId = data.user.id
+          }
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/enterprise/sysEnterprise/selectSysEnterpriseTree/0/0'),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.options = data.list
+            } else {
+              this.options = []
+            }
+          }).then(() => {
+            // 初始化webSocket
+            const userId = this.userId + '_' + getUUID()
+            const wsUri = window.SITE_CONFIG.wsUrl + '/ws/dynamicRisk/' + userId + '/' + this.dataForm.id
+            this.webSocket = new WebSocket(wsUri)
+            this.webSocket.onopen = this.webSocketOnOpen
+            this.webSocket.onerror = this.webSocketOnError
+            this.webSocket.onmessage = this.webSocketOnMessage
+            this.webSocket.onclose = this.webSocketClose
+          })
+        })
+      },
+      webSocketOnOpen () {
+        console.log('WebSocket连接成功')
+      },
+      webSocketOnError (e) {
+        // 错误
+        console.log('WebSocket连接发生错误')
+      },
+      webSocketOnMessage (e) {
+        // 接受数据
+        const redata = JSON.parse(e.data)
+        this.dataHandle(redata)
+      },
+
+      webSocketSend (agentData) {
+        // 数据发送
+        this.webSocket.send(agentData)
+      },
+      webSocketClose (e) {
+        // 关闭
+        console.log('connection closed')
+      },
+      // 数据处理
+      dataHandle (redata) {
+        this.dataForm.enterpriseName = redata.entName
+        this.riskLevel = redata.riskLevel
+        this.level1 = redata.level1
+        this.level2 = redata.level2
+        this.level3 = redata.level3
+        this.level4 = redata.level4
+        this.sensorCount = redata.sensorCount
+        this.videoCount = redata.videoCount
+        this.sensorPieArr = []
+        const sensorLevel1Str = {value: this.level1, name: '1级', itemStyle: {normal: {color: '#FF0000'}}}
+        const sensorLevel2Str = {value: this.level2, name: '2级', itemStyle: {normal: {color: '#FF9900'}}}
+        const sensorLevel3Str = {value: this.level3, name: '3级', itemStyle: {normal: {color: '#E0E30E'}}}
+        const sensorLevel4Str = {value: this.level4, name: '4级', itemStyle: {normal: {color: '#009CFF'}}}
+        this.sensorPieArr.push(sensorLevel1Str)
+        this.sensorPieArr.push(sensorLevel2Str)
+        this.sensorPieArr.push(sensorLevel3Str)
+        this.sensorPieArr.push(sensorLevel4Str)
+        if (this.riskLevel === 1) {
+          this.riskLevelColor = '红色'
+          this.riskLevelName = '红色风险'
+          this.colorTxt = '#FF0000'
+        } else if (this.riskLevel === 2) {
+          this.riskLevelColor = '橙色'
+          this.riskLevelName = '橙色风险'
+          this.colorTxt = '#FF9900'
+        } else if (this.riskLevel === 3) {
+          this.riskLevelColor = '黄色'
+          this.riskLevelName = '黄色风险'
+          this.colorTxt = '#E0E30E'
+        } else if (this.riskLevel === 4) {
+          this.riskLevelColor = '蓝色'
+          this.riskLevelName = '蓝色风险'
+          this.colorTxt = '#009CFF'
+        } else if (this.riskLevel === 0) {
+          this.riskLevelColor = '超红色'
+          this.riskLevelName = '超红色风险'
+          this.colorTxt = '#c30000'
+        }
+        this.riskPieArr = []
+        const riskLevelStr = {value: this.riskLevel, name: this.riskLevelName}
+        this.riskPieArr.push(riskLevelStr)
+        this.hiddenUpMajorHiddenCount = redata.hiddenUpMajorHiddenCount
+        this.unRectifyMajorHiddenCount = redata.unRectifyMajorHiddenCount
+        this.invesaccDateCount = redata.invesaccDateCount
+        if (this.invesaccDateCount > 0) {
+          this.invesaccDateFlag = '是'
+        } else {
+          this.invesaccDateFlag = '否'
+        }
+        this.checkDateCount = redata.checkDateCount
+        if (this.checkDateCount > 0) {
+          this.checkDateFlag = '是'
+        } else {
+          this.checkDateFlag = '否'
+        }
+        if (redata.weatherAlarmInfo == [] || redata.weatherAlarmInfo == undefined) {
+          this.weatherAlarmInfo = '无数据'
+        } else {
+          this.weatherAlarmInfo = redata.weatherAlarmInfo
+        }
+        if (redata.weather.updateTime == [] || redata.weather.updateTime == undefined) {
+          this.weatherUpdateTime = '00:00'
+        } else {
+          this.weatherUpdateTime = redata.weather.updateTime
+        }
+        if (redata.weatherAqiInfo == [] || redata.weatherAqiInfo == undefined) {
+          this.weatherAqiInfo = '无数据'
+        } else {
+          this.weatherAqiInfo = redata.weatherAqiInfo
+        }
+        if (redata.weather.relativeHumidity == [] || redata.weather.relativeHumidity == undefined) {
+          this.relativeHumidity = '0'
+        } else {
+          this.relativeHumidity = redata.weather.relativeHumidity
+        }
+        if (redata.weather.weatherInfo == [] || redata.weather.weatherInfo == undefined) {
+          this.weatherInfo = '无数据'
+        } else {
+          this.weatherInfo = redata.weather.weatherInfo
+        }
+        if (redata.weather.airTemperature == [] || redata.weather.airTemperature == undefined) {
+          this.airTemperature = '0'
+        } else {
+          this.airTemperature = redata.weather.airTemperature
+        }
+        // 管理及其他风险
+        this.manageList = []
+        if (redata.manageList.length >= 6) {
+          this.manageList = redata.manageList
+        } else if (redata.manageList.length >= 0 && redata.manageList.length < 6) {
+          this.manageList = redata.manageList
+          const manageSize = redata.manageList.length
+          for (let i = 0; i < (6 - manageSize); i++) {
+            const manageTxt = {date: '—', name: '—', level: '—'}
+            this.manageList.push(manageTxt)
+          }
+        }
+        // 大数据因子
+        this.accidentBigList = []
+        if (redata.accidentBigList.length >= 6) {
+          this.accidentBigList = redata.accidentBigList
+        } else if (redata.accidentBigList.length >= 0 && redata.accidentBigList.length < 6) {
+          this.accidentBigList = redata.accidentBigList
+          const accidentBigSize = redata.accidentBigList.length
+          for (let i = 0; i < (6 - accidentBigSize); i++) {
+            const accidentBig = {date: '—', name: '—', level: '—'}
+            this.accidentBigList.push(accidentBig)
+          }
+        }
+
+        this.initChart()
+      },
+      selectLists () {
+        this.selectList = !this.selectList
+      },
+      // 仪表盘option
+      initChart () {
+        const _this = this
+        var gaugeOption = {
+          title: {
+            text: '',
+            subtext: '',
+            textStyle: {
+              fontWeight: 100
+            }
+          },
+          tooltip: {
+            formatter: '风险值 : {c}'
+          },
+          grid: {
+            top: '-10%',
+            left: '0%',
+            right: '0%',
+            bottom: '1'
+          },
+
+          toolbox: {
+            show: false,
+            feature: {
+              mark: {show: true},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+          series: [
+            {
+              name: '',
+              type: 'gauge',
+              splitNumber: 1,
+              center: ['50%', '50%'],
+              radius: '80%',
+              max: '4',
+              axisLine: {            // 坐标轴线
+                show: false,
+                lineStyle: {       // 属性lineStyle控制线条样式
+                  color: [[0.25, '#FF0000'], [0.50, '#FFA500'], [0.75, '#FFFF00'], [1, '#0000FF']],
+                  width: 20
+                }
+              },
+              pointer: {
+                width: 5,
+                length: '80%',
+                shadowColor: '#fff', // 默认透明
+                shadowBlur: 5
+              },
+              title: {
+                show: true, // 显示name
+                offsetCenter: [0, '-30%'],       // x, y，单位px
+                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                  fontSize: 22,
+                  color: [[0.25, '#FF0000'], [0.50, '#FFA500'], [0.75, '#FFFF00'], [1, '#0000FF']]
+                }
+              },
+              detail: {
+                show: true,
+                formatter: '{value}',
+                offsetCenter: [0, '60%'],
+                textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                  fontSize: 14
+                }
+              },
+              data: _this.riskPieArr
+            }
+          ]
+        }
+
+        // 饼图
+        var pieOption = {
+          title: {
+            text: '',
+            x: 'center',
+            y: '10%',
+            textStyle: { // 设置主标题风格
+              color: '#fff', // 设置主标题字体颜色
+              fontSize: '16',
+              fontWeight: '0'
+            }
+          },
+          series: [
+            {
+              type: 'pie',
+              radius: [50, 30],
+              x: '100%',
+              data: _this.sensorPieArr
+            }
+          ]
+        }
+
+        // 柱状图
+        var barOption = {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          grid: {
+            top: '20%',
+            left: '10%',
+            right: '5%',
+            bottom: '15%'
+          },
+          calculable: true,
+          xAxis: [
+            {
+              axisTick: {show: true},
+              show: true,
+              // 设置轴线的属性
+              axisLine: {
+                lineStyle: {
+                  color: '#CCCCCC',
+                  width: 1
+                }
+              },
+              textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                fontSize: 10
+              },
+              data: ['重大风险', '较大风险', '一般风险', '低风险']
+
+            }
+          ],
+          yAxis: {
+            nameTextStyle: {
+              color: '#535353',
+              fontSize: 12
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#F8F8F8',
+                width: 1
+              }
+            },
+            // min:0,
+            // max:90,
+            // splitNumber:3,
+            // 设置轴线的属性
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: '#CCCCCC',
+                fontSize: 10,
+                width: 0.01
+              }
+            },
+            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+              fontSize: 10
+            }
+          },
+          series: [
+            {
+              name: '风险数',
+              type: 'bar',
+              stack: 'sum',
+              barWidth: 10,
+              itemStyle: {
+                normal: {
+                  color: '#1A679D',
+                  barBorderRadius: 0,
+                  label: {
+                    // show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: 'tomato'
+                    }
+                  }
+                }
+              },
+              data: [0, 1, 2, 3]
+            }
+          ]
+        }
+        // 风险等级仪表盘
+        let upLeftDownLeft = echarts.init(document.getElementById('up_left_down_left'))
+        // 监测预警饼图
+        let upOtherLeft = echarts.init(document.getElementById('up_other_left'))
+        // 固有风险柱状图
+        let upRightBar = echarts.init(document.getElementById('up_right_bar'))
+        // 赋值
+        upLeftDownLeft.setOption(gaugeOption)
+        upOtherLeft.setOption(pieOption)
+        upRightBar.setOption(barOption)
+        window.addEventListener('resize', function () {
+          upLeftDownLeft.resize()
+          upOtherLeft.resize()
+          upRightBar.resize()
+        })
+      }
+    }
+  }
+</script>
+
+<style>
+  .weatherAlarmInfo {
+    background-color: #F68D3B;
+    padding: 0 5px;
+    display: inline-block;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+  }
+
+  .riskDynaAnal-page-title span {
+    font-size: 20px;
+    font-weight: bold;
+    color: #F6D650;
+    background-image: -webkit-linear-gradient(top, #181E36, #073580 20%);
+  }
+
+  .riskDynaAnal-page-search {
+    width: 100%;
+    height: 50px;
+    text-align: right;
+    color: #199ED8;
+    padding-right: 10%;
+  }
+
+  .riskDynaAnal-page-search > div {
+    width: 300px;
+    display: inline-block;
+  }
+
+  .riskDynaAnal-page-search select {
+    width: 150px;
+    color: #199ED8;
+    border: 2px #FFF solid;
+    background-color: #181E36;
+  }
+
+  .riskDynaAnal-mo-title-3 {
+    position: absolute;
+    height: 30px;
+    width: 32%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 20px;
+    z-index: 1;
+  }
+
+  .riskDynaAnal-mo-title-3 p {
+    position: absolute;
+    top: 3px;
+    margin-top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+  }
+
+  .riskDynaAnal-mo-title-3 span {
+    display: inline-block;
+    width: 200px;
+    margin-top: 2px;
+    border-top: 28px solid #21354E;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+  }
+
+  .riskDynaAnal-mo-title-4 {
+    position: absolute;
+    height: 30px;
+    width: 24%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 20px;
+    z-index: 1;
+  }
+
+  .riskDynaAnal-mo-title-4 p {
+    position: absolute;
+    top: 3px;
+    left: 0px;
+    margin-top: 0px;
+    width: 100%;
+    z-index: 10;
+    text-align: center;
+  }
+
+  .riskDynaAnal-mo-title-4 span {
+    display: inline-block;
+    width: 200px;
+    margin-top: 2px;
+    border-top: 28px solid #21354E;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+  }
+
+  .riskDynaAnal-content {
+    width: 100%;
+    height: 520px;
+  }
+
+  .riskDynaAnal-up {
+    width: 100%;
+    height: 40%;
+  }
+
+  .riskDynaAnal-down {
+    width: 100%;
+    height: 60%;
+    margin-top: 10px;
+  }
+
+  .riskDynaAnal-up-left {
+    width: 32.5%;
+    height: 100%;
+    margin-left: 0px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .riskDynaAnal-up-left-up {
+    width: 100%;
+    height: 20%;
+    line-height: 1.5em;
+    padding-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .riskDynaAnal-up-left-down {
+    width: 100%;
+    height: 80%;
+  }
+
+  .riskDynaAnal-up-left-down-left {
+    width: 50%;
+    height: 100%;
+    float: left;
+  }
+
+  .riskDynaAnal-up-left-down-right {
+    width: 50%;
+    height: 100%;
+    float: left;
+    padding-top: 10%;
+  }
+
+  .riskDynaAnal-up-left-down-right-color {
+    width: 70%;
+    height: 100%;
+    line-height: 100px;
+    font-size: 38px;
+    font-weight: bold;
+    padding-left: 10px;
+    float: left;
+  }
+
+  .riskDynaAnal-up-left-down-right-arrow {
+    width: 30%;
+    height: 100%;
+    line-height: 100px;
+    color: #2B93D5;
+    font-size: 38px;
+    font-weight: bold;
+    padding-left: 10px;
+    float: left;
+  }
+
+  .riskDynaAnal-up-other {
+    width: 33%;
+    height: 100%;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .riskDynaAnal-up-other-left {
+    width: 50%;
+    height: 100%;
+    float: left;
+  }
+
+  .riskDynaAnal-up-other-rigth {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: Center;
+    float: left;
+  }
+
+  .riskDynaAnal-up-other-bar {
+    width: 100%;
+    height: 95%;
+    float: left;
+  }
+
+  .riskDynaAnal-up-other-rigth-mode {
+    width: 60%;
+    height: 60%;
+  }
+
+  .riskDynaAnal-up-other-rigth-up {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: Center;
+    background-color: #042141;
+    float: left;
+  }
+
+  .riskDynaAnal-up-other-rigth-center {
+    width: 100%;
+    height: 20%;
+    float: left;
+  }
+
+  .riskDynaAnal-up-other-rigth-down {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: Center;
+    background-color: #042141;
+  }
+
+  .riskDynaAnal-down-left {
+    width: 24.5%;
+    height: 100%;
+    margin-left: 0px;
+    float: left;
+  }
+
+  .riskDynaAnal-down-other {
+    width: 24.5%;
+    height: 100%;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    float: left;
+  }
+
+  .riskDynaAnal-down-other-left {
+    height: 100%;
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: Center;
+  }
+
+  .riskDynaAnal-down-other-left ul {
+    padding-left: 10px;
+  }
+
+  .riskDynaAnal-down-other-left ul li {
+    line-height: 1.8em;
+    list-style: none;
+  }
+
+  .riskDynaAnal-down-other-left ul li img {
+    padding-right: 10px;
+  }
+
+  .riskDynaAnal-down-left-up {
+    width: 100%;
+    height: 50%;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+  }
+
+  .riskDynaAnal-down-left-up-con {
+    width: 100%;
+    margin-top: 15%;
+  }
+
+  .riskDynaAnal-down-left-up-con-top {
+    width: 100%;
+    height: 20%;
+    float: left;
+    padding-top: 10px;
+  }
+
+  .riskDynaAnal-down-left-up-con-center {
+    margin: 5px 0;
+  }
+
+  .riskDynaAnal-down-left-up-con-down {
+    width: 100%;
+    height: 70%;
+    float: left;
+  }
+
+  .riskDynaAnal-down-left-up-con-down-left {
+    padding-left: 10px;
+    width: 50%;
+    height: 100%;
+    float: left;
+  }
+
+  .riskDynaAnal-down-left-up-con-down-right {
+    width: 50%;
+    height: 100%;
+    float: left;
+  }
+
+  .riskDynaAnal-down-left-up-con-down-right-top {
+    height: 30%;
+    width: 100%;
+    float: left;
+  }
+
+  .riskDynaAnal-down-left-up-con-down-right-center, riskDynaAnal-down-left-up-con-down-right-down {
+    width: 100%;
+    float: left;
+    margin-top: 10px;
+    line-height: 1.8em;
+  }
+
+  .riskDynaAnal-down-left-down {
+    width: 100%;
+    height: 49%;
+    margin-top: 6px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+  }
+
+  .riskDynaAnal-down-left-down-down {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: Center;
+    text-align: center;
+  }
+
+  .riskDynaAnal-down-left-down-left {
+    width: 40%;
+    height: auto;
+    font-size: 30px;
+    font-weight: bold;
+
+  }
+
+  .riskDynaAnal-down-left-down-right {
+    width: 60%;
+    height: auto;
+  }
+
+  .riskDynaAnal-down-other-rigth {
+    width: 95%;
+    height: 95%;
+    margin-top: 12%;
+    margin-left: 8px;
+    align-items: center;
+  }
+
+  .riskDynaAnal-down-other-rigth-title {
+    width: 100%;
+    height: 20px;
+  }
+
+  .riskDynaAnal-down-other-rigth-con {
+    width: 100%;
+    height: 90%;
+  }
+
+  .riskDynaAnal-down-other-rigth-con .tabDynaAnal thead {
+    background: #042141;
+    line-height: 1.8em;
+  }
+
+  .riskDynaAnal-down-other-rigth-con .tabDynaAnal td {
+    background: #001837;
+    text-align: center;
+  }
+
+  .riskDynaAnal-down-other-rigth-con .tabDynaAnal th,
+  .riskDynaAnal-down-other-rigth-con .tabDynaAnal td {
+    border: 1px solid #133050;
+    width: 33%;
+  }
+
+  .riskDynaAnal-down-other-rigth-con table {
+    width: 100%;
+    height: 100%;
+    border: 0px;
+  }
+
+  .riskDynaAnal-down-other-rigth-con table tbody {
+
+  }
+</style>

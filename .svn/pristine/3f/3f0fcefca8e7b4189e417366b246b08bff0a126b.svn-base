@@ -1,0 +1,394 @@
+<template>
+  <el-dialog
+    fullscreen
+    :visible.sync="addDialogVisible">
+    <div class="mod-moniWarn-info">
+      <!--模块切换-->
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="实时监测" name="first">
+          <!--实时监测-->
+          <el-row :gutter="10">
+            <!--实时监测：左-->
+            <el-col :span="6">
+              <div class="modulGround">
+                <el-cascader
+                  :options="options"
+                  v-model="selectedOptions"
+                  @change="handleChange">
+                </el-cascader>
+              </div>
+            </el-col>
+            <!--实时监测：右-->
+            <el-col :span="18">
+              <div class="modulGround">
+                <div class="moduleContent">
+                  <!--右上：标题信息栏-->
+                  <div class="real-timeMonitor">
+                    <span class="company">嘉必优生物技术（武汉）股份有限公司葛店分公司</span>
+                    <span class="monitorNum">监测位置：{{5}}个</span>
+                    <span class="monitorNum">传感器数量：{{8}}个</span>
+                  </div>
+                  <!--右下：监测位置图-->
+                  <div class="real-timeSvg">
+
+                  </div>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="视频监控" name="second">
+          <el-row :gutter="10">
+            <!--实时监测：左-->
+            <el-col :span="6">
+              <div class="modulGround">
+                <el-cascader
+                  :options="options"
+                  v-model="selectedOptions"
+                  @change="handleChange">
+                </el-cascader>
+              </div>
+            </el-col>
+            <!--实时监测：右-->
+            <el-col :span="18">
+              <div class="modulGround">
+                <div class="moduleContent">
+                  <el-row>
+                    <el-col :span="18">
+                      <div class="video">
+                        放视频
+                      </div>
+                      <div class="controlVideo">
+                        <el-row>
+                          <el-col>
+                            <el-row>
+                              <el-col :span="8">
+                                <el-select v-model="videos" placeholder="请选择">
+                                  <el-option
+                                    v-for="item in videoMultiple"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                  </el-option>
+                                </el-select>
+                              </el-col>
+                              <el-col :span="16">
+                                <div class="controlButton">
+                                  <span title="全屏">全屏</span>
+                                  <span title="播放">播放</span>
+                                  <span title="暂停">暂停</span>
+                                  <span title="抓图">抓图</span>
+                                </div>
+                              </el-col>
+                            </el-row>
+
+                          </el-col>
+                          <el-col>
+                            <div class="videoBottom">
+                              <el-form ref="videoForm" :model="videoForm" label-width="100px">
+                                <el-row>
+                                  <el-col :span="12">
+                                    <el-form-item label="已登录设备">
+                                      <el-select v-model="videos" placeholder="请选择">
+                                        <el-option
+                                          v-for="item in videoMultiple"
+                                          :key="item.value"
+                                          :label="item.label"
+                                          :value="item.value">
+                                        </el-option>
+                                      </el-select>
+                                    </el-form-item>
+                                  </el-col>
+                                  <el-col :span="12">
+                                    <el-form-item label="通道列表">
+                                      <el-select v-model="videos" placeholder="请选择">
+                                        <el-option
+                                          v-for="item in videoMultiple"
+                                          :key="item.value"
+                                          :label="item.label"
+                                          :value="item.value">
+                                        </el-option>
+                                      </el-select>
+                                    </el-form-item>
+                                  </el-col>
+                                </el-row>
+                              </el-form>
+                            </div>
+                          </el-col>
+                        </el-row>
+                      </div>
+                    </el-col>
+                    <el-col :span="6">
+                      <div class="modulGround">
+                        <div class="modulTitle">
+                          <p @click="monitoringTitle()">视频备注</p>
+                          <span></span>
+                        </div>
+                        <div class="moduleContent" style="padding-top: 50px;">
+                          <el-form ref="videoForm" :model="videoForm" label-width="80px">
+                            <el-form-item label="风险单元">
+                              <el-input v-model="videoForm.riskUnit"></el-input>
+                            </el-form-item>
+                            <el-form-item label="风险描述">
+                              <el-input v-model="videoForm.riskUnit"></el-input>
+                            </el-form-item>
+                            <el-form-item label="风险等级">
+                              <el-input v-model="videoForm.riskUnit"></el-input>
+                            </el-form-item>
+                            <el-form-item label="风险单元">
+                              <el-input type="textarea" v-model="videoForm.riskUnit"></el-input>
+                            </el-form-item>
+                          </el-form>
+                        </div>
+                      </div>
+                    </el-col>
+                  </el-row>
+
+
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="人员定位" name="third">
+          <el-form ref="videoForm" :model="videoForm" label-width="80px">
+            <div class="peoples">
+              <div>
+                <el-form-item label="活动区域">
+                  <el-select v-model="videos" placeholder="请选择">
+                    <el-option
+                      v-for="item in videoMultiple"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+
+              </div>
+              <div>
+                <el-form-item label="活动区域">
+                  <el-select v-model="videos" placeholder="请选择">
+                    <el-option
+                      v-for="item in videoMultiple"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div>
+                <el-form-item label="活动区域">
+                  <el-select v-model="videos" placeholder="请选择">
+                    <el-option
+                      v-for="item in videoMultiple"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div>
+                <el-form-item label="活动区域">
+                  <el-select v-model="videos" placeholder="请选择">
+                    <el-option
+                      v-for="item in videoMultiple"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </div>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="历史数据" name="fourth">
+
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+
+
+  </el-dialog>
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        addDialogVisible: false,
+        activeName: 'first',
+        // 左侧级联菜单
+        options: [
+          {
+            value: 'zhinan',
+            label: '所有区域',
+            children: [{
+              value: 'shejiyuanze',
+              label: '设计原则',
+              children: [{
+                value: 'yizhi',
+                label: '一致'
+              }, {
+                value: 'fankui',
+                label: '反馈'
+              }, {
+                value: 'xiaolv',
+                label: '效率'
+              }, {
+                value: 'kekong',
+                label: '可控'
+              }]
+            }, {
+              value: 'daohang',
+              label: '导航',
+              children: [{
+                value: 'cexiangdaohang',
+                label: '侧向导航'
+              }, {
+                value: 'dingbudaohang',
+                label: '顶部导航'
+              }]
+            }]
+          }, {
+            value: 'zujian',
+            label: '所有行业',
+            children: [{
+              value: 'basic',
+              label: 'Basic',
+              children: [{
+                value: 'layout',
+                label: 'Layout 布局'
+              }, {
+                value: 'color',
+                label: 'Color 色彩'
+              }, {
+                value: 'typography',
+                label: 'Typography 字体'
+              }, {
+                value: 'icon',
+                label: 'Icon 图标'
+              }, {
+                value: 'button',
+                label: 'Button 按钮'
+              }]
+            }, {
+              value: 'form',
+              label: 'Form',
+              children: [{
+                value: 'radio',
+                label: 'Radio 单选框'
+              }, {
+                value: 'checkbox',
+                label: 'Checkbox 多选框'
+              }, {
+                value: 'input',
+                label: 'Input 输入框'
+              }, {
+                value: 'input-number',
+                label: 'InputNumber 计数器'
+              }, {
+                value: 'select',
+                label: 'Select 选择器'
+              }, {
+                value: 'cascader',
+                label: 'Cascader 级联选择器'
+              }, {
+                value: 'switch',
+                label: 'Switch 开关'
+              }, {
+                value: 'slider',
+                label: 'Slider 滑块'
+              }, {
+                value: 'time-picker',
+                label: 'TimePicker 时间选择器'
+              }, {
+                value: 'date-picker',
+                label: 'DatePicker 日期选择器'
+              }, {
+                value: 'datetime-picker',
+                label: 'DateTimePicker 日期时间选择器'
+              }, {
+                value: 'upload',
+                label: 'Upload 上传'
+              }, {
+                value: 'rate',
+                label: 'Rate 评分'
+              }, {
+                value: 'form',
+                label: 'Form 表单'
+              }]
+            }]
+          }],
+        selectedOptions: [],
+        // 视频播放速度选项
+        videoMultiple: [
+          {
+            value: '选项1',
+            label: '3x3'
+          }, {
+            value: '选项2',
+            label: '2x2'
+          }
+        ],
+        videos: [],
+        // 右侧表单
+        videoForm: {
+          riskUnit: ''
+        }
+      }
+    },
+    methods: {
+      init () {
+        this.addDialogVisible = true
+      },
+      handleClick (tab, event) {
+        console.log(tab, event)
+      },
+      handleChange (value) {
+        console.log(value)
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  .mod-moniWarn-info {
+    & .real-timeMonitor {
+      & span {
+        padding: 5px 10px;
+        background: #042141;
+        display: inline-block;
+        margin: 5px;
+      }
+      & .company {
+        color: #ffffff;
+      }
+      & .monitorNum {
+        color: #ff9d4d;
+      }
+    }
+    & .controlVideo{
+      & .controlButton{
+        & span{
+          display: inline-block;
+          background: #042141;
+          padding: 5px;
+          cursor: pointer;
+          &:hover{
+            background: #ff9d4d;
+          }
+        }
+      }
+      & .videoBottom{
+        margin-top: 30px;
+      }
+    }
+    & .peoples div{
+      display: inline-block;
+    }
+  }
+</style>

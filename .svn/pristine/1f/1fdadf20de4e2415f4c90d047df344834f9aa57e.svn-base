@@ -1,0 +1,540 @@
+<template>
+  <el-row>
+    <div class="modTitleBox">
+      <div class="modTitle" @click="selectLists()">
+        <span class="modImg"><img src="../../../assets/img/monitoringWarning/u1649.png" alt=""></span>
+        <span class="modTxt">监测预警信息</span>
+      </div>
+      <div class="modSelectList" v-show="selectList" @click="selectList = false">
+        <div @click="$router.push({ name: 'visuInte' });">视觉智能信息</div>
+      </div>
+    </div>
+    <div class="mod-monitoringWarning" :style="{height: styleHeight}">
+      <el-row style="height: 100%;">
+        <!--左-->
+        <el-col :span="8" style="height: 100%;">
+          <div class="modulGround" style="height: 100%;">
+            <div class="modulTitle">
+              <p @click="monitoringTitle()" style="cursor: pointer">监测信息概览</p>
+              <span></span>
+            </div>
+            <!--盛放内容模块公共样式名称：moduleContent-->
+            <div class="moduleContent moduleTop">
+              <div class="modulePading">
+                <el-row :gutter="8" style="height: 22%;">
+                  <el-col :span="8" style="height: 100%;">
+                    <div class="monitoringModule">
+                      <div class="monitoringCenter">
+                        <div class="upTxt">实时联网</div>
+                        <div class="downData" style="color:#F73363">{{monitorAccess}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="8" style="height: 100%;">
+                    <div class="monitoringModule">
+                      <div class="monitoringCenter">
+                        <div class="upTxt">数据/视频</div>
+                        <div class="downData" style="color:#166BCE">{{monitorAccess}}/{{videoNumber}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="8" style="height: 100%;">
+                    <div class="monitoringModule">
+                      <div class="monitoringCenter">
+                        <div class="upTxt">正常/故障</div>
+                        <div class="downData" style="color:#FF6600">{{realDataNumber}}/{{realDataFaultNumber}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="8" style="height: 30%;">
+                  <el-col :span="12" style="height: 100%;">
+                    <div class="monitoringModule">
+                      <div class="monitoringCenter">
+                        <div class="upTxt">重点区域报警</div>
+                        <div class="downData" style="color:#FF6600">{{significantRiskNumber}}</div>
+                        <div class="upTxt">一般区域报警</div>
+                        <div class="downData" style="color:#FF6600">{{generalRiskNumber}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" style="height: 100%;">
+                    <div class="monitoringModule">
+                      <div class="monitoringCenter">
+                        <div class="upTxt">视频智能报警</div>
+                        <div class="downData" style="color:#FF6600">{{0}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row style="height: 40%;">
+                  <el-col :span="12" style="height: 100%;">
+                    <div class="echartsRegion">
+                      <div @click="echartsFun()" id="pie-left-bottom-left" style="width: 100%; height: 300px;"></div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" style="height: 100%;">
+                    <div class="echartsRegion">
+                      <div id="pie-left-bottom-right" style="width: 100%; height: 300px;"></div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+
+            </div>
+          </div>
+        </el-col>
+        <!--右-->
+        <el-col :span="16" style="height: 100%;">
+          <div class="bar-right" style="height: 100%;">
+            <div id="bar-right-up" style="width: 100%; height: 49%;"></div>
+            <div id="bar-right-down" style="width: 100%; height: 49%"></div>
+          </div>
+        </el-col>
+      </el-row>
+      <!--监测信息概览-->
+      <moniWarnInfo v-if="moniWarnInfoVisible" ref="moniWarnInfo"></moniWarnInfo>
+      <!--柱状图-->
+      <echartsBar v-if="echartsBarVisible" ref="echartsBar"></echartsBar>
+    </div>
+  </el-row>
+
+</template>
+
+<script>
+  import moniWarnInfo from './moniInfo'
+  import echartsBar from './moniWarn-echartsBar'
+  import echarts from 'echarts'
+
+  export default {
+    data () {
+      return {
+        styleHeight: window.screen.availHeight - 108 + 'px',
+        monitorAccess: '0',
+        videoNumber: '0',
+        realDataNumber: '0',
+        realDataFaultNumber: '0',
+        significantRiskNumber: '0',
+        generalRiskNumber: '0',
+        selectList: false,
+        moniWarnInfoVisible: false,
+        echartsBarVisible: false,
+        areaIdArr: [],
+        areaArr: [],
+        areaTransFiniteNumber: [], // 超限数
+        areaAlarmNumber: [], // 报警数
+        industryIdArr: [],
+        industryArr: [],
+        industryTransFiniteNumber: [],
+        industryAlarmNumber: [],
+        normallAreaArr: [], // 一般区域报警
+        bignessAreaArr: [] // 重大区域报警
+      }
+    },
+    components: {
+      moniWarnInfo, echartsBar
+    },
+    mounted () {
+      this.getAllNumber()
+      this.echarts()
+    },
+    methods: {
+      //  点击柱状图弹框
+      normalOrFault (areaId, businessType, name) {
+        this.echartsBarVisible = true
+        this.$nextTick(() => {
+          this.$refs.echartsBar.init(areaId, businessType, name)
+        })
+      },
+      // 左侧监测预警信息
+      getAllNumber () {
+        this.$http({
+          url: this.$http.adornUrl('/sensor/sensorDataWarn/allNumber'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.monitorAccess = data.list.monitorAccess
+            this.videoNumber = data.list.videoNumber
+            this.realDataNumber = data.list.realDataNumber
+            this.realDataFaultNumber = data.list.realDataFaultNumber
+            this.significantRiskNumber = data.list.significantRiskNumber
+            this.generalRiskNumber = data.list.generalRiskNumber
+          }
+        })
+      },
+      monitoringTitle () {
+        this.moniWarnInfoVisible = true
+        this.$nextTick(() => {
+          this.$refs.moniWarnInfo.init()
+        })
+      },
+      selectLists () {
+        this.selectList = !this.selectList
+      },
+      selected () {
+        this.selectList = !this.selectList
+      },
+      echarts () {
+        var _this = this
+        var barOption = {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            },
+            formatter: function (params) {
+              return params[0].name + '<br/>' +
+                params[0].seriesName + ' : ' + params[0].value + '<br/>' +
+                params[1].seriesName + ' : ' + params[1].value
+            }
+          },
+          grid: {
+            top: '20%',
+            left: '10%',
+            right: '5%',
+            bottom: '15%'
+          },
+          legend: {
+            x: 'center',
+            y: '10%',
+            data: ['超限数', '报警数'],
+            textStyle: {
+              color: '#fff'// 设置主标题字体颜色
+            }
+          },
+          calculable: true,
+          xAxis: [
+            {
+              axisTick: {show: true},
+              show: true,
+              // 设置轴线的属性
+              axisLine: {
+                lineStyle: {
+                  color: '#CCCCCC',
+                  width: 1
+                }
+              },
+              textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                fontSize: 10
+              },
+              data: ['鄂城区', '三江港新区', '葛店经济开发区', '西山街办', '华容区', '红莲湖新区']
+
+            }
+          ],
+          yAxis: {
+            nameTextStyle: {
+              color: '#535353',
+              fontSize: 12
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#F8F8F8',
+                width: 1
+              }
+            },
+            // min:0,
+            // max:90,
+            // splitNumber:3,
+            // 设置轴线的属性
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: '#CCCCCC',
+                fontSize: 10,
+                width: 0.01
+              }
+            },
+            textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+              fontSize: 10
+            }
+          },
+          series: [
+            {
+              name: '报警数',
+              type: 'bar',
+              barGap: '-100%',
+              barMaxWidth: 10,
+              barMinWidth: 10,
+              itemStyle: {
+                normal: {
+                  color: '#1A679D',
+                  barBorderRadius: 0,
+                  label: {
+                    // show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: 'tomato'
+                    }
+                    // formatter: function (params) {
+                    //   for (var i = 0, l = option.xAxis[0].data.length; i < l; i++) {
+                    //     if (option.xAxis[0].data[i] == params.name) {
+                    //       return option.series[0].data[i] + params.value
+                    //     }
+                    //   }
+                    // }
+                  }
+                }
+              },
+              data: [40, 80, 50, 80, 80, 70]
+            },
+            {
+              name: '超限数',
+              type: 'bar',
+              barGap: '-100%',
+              barMaxWidth: 10,
+              barMinWidth: 10,
+              itemStyle: {
+                normal: {
+                  color: '#FF9900',
+                  barBorderRadius: 0
+
+                }
+              },
+              data: [260, 200, 220, 120, 100, 80]
+            }
+          ]
+        }
+        // 重点风险区域 一般区域报警
+        var pieOption = {
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+          },
+          title: {
+            text: '一般风险区域',
+            left: 'center',
+            top: 'top',
+            textStyle: {
+              color: '#FFF'
+            }
+          },
+          legend: {
+            orient: 'horizontal',
+            selected: 'false',
+            x: 'center',
+            y: '54%',
+            icon: 'rect',
+            itemWidth: 14,
+            data: ['预警数', '超限数'],
+            textStyle: {
+              color: '#FFF',
+              fontSize: 14
+            }
+          },
+          series: [
+            {
+              name: '',
+              type: 'pie',
+              radius: '60%',
+              avoidLabelOverlap: false,
+              startAngle: 180,
+              tooltip: {
+                show: false
+              },
+              animation: false,
+              itemStyle: {
+                normal: {
+                  borderColor: 'transparent',
+                  borderWidth: 20
+                },
+                emphasis: {
+                  borderColor: 'transparent',
+                  borderWidth: 20
+                }
+              },
+              label: {
+                normal: {
+                  show: false,
+                  position: 'inside',
+                  formatter: '{c}%'
+                }
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: [
+                {value: 50, name: '', itemStyle: {normal: {color: '#206A98'}}},
+                {value: 50, name: '', itemStyle: {normal: {color: '#181E36'}}}
+              ]
+            },
+            {
+              name: '比例',
+              type: 'pie',
+              radius: ['70%', '80%'],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: 'inside',
+                  formatter: '{c}%'
+                },
+                emphasis: {
+                  show: false,
+                  textStyle: {
+                    fontSize: '20',
+                    fontWeight: 'bold'
+                  }
+                }
+
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: [
+                {value: 500, name: '预警数'},
+                {value: 206, name: '超限数'}
+              ]
+            }
+          ]
+        }
+        // 区域报警 饼图
+        this.$http({
+          url: this.$http.adornUrl('/sensor/sensorDataWarn/majorRiskAreasPie'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            console.log('----区域报警----' + data.list)
+            this.normallAreaArr.push({
+              value: data.list[0].warnNumber,
+              name: '预警数',
+              itemStyle: {normal: {color: '#C88541'}}
+            })
+            this.normallAreaArr.push({
+              value: data.list[0].transFiniteNumber,
+              name: '超限数',
+              itemStyle: {normal: {color: '#C74727'}}
+            })
+            this.bignessAreaArr.push({
+              value: data.list[1].warnNumber,
+              name: '预警数',
+              itemStyle: {normal: {color: '#C88541'}}
+            })
+            this.bignessAreaArr.push({
+              value: data.list[1].transFiniteNumber,
+              name: '超限数',
+              itemStyle: {normal: {color: '#C74727'}}
+            })
+            var pieLeftBottomLeft = echarts.init(document.getElementById('pie-left-bottom-left'))
+            pieOption.title.text = '重点风险区域'
+            // pieOption.series[0].data = this.bignessAreaArr
+            pieOption.series[1].data = this.bignessAreaArr
+            pieLeftBottomLeft.setOption(pieOption)
+
+            var pieLeftBottomRight = echarts.init(document.getElementById('pie-left-bottom-right'))
+            pieOption.title.text = '一般区域预警'
+            // pieOption.series[0].data = this.normallAreaArr
+            pieOption.series[1].data = this.normallAreaArr
+            pieLeftBottomRight.setOption(pieOption)
+          }
+        })
+
+        // 区域柱状图
+        this.$http({
+          url: this.$http.adornUrl('/sensor/sensorDataWarn/dataArea?parentId=16'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            console.log('----区街信息----')
+            for (let areaObj of data.dataList) {
+              this.areaIdArr.push(areaObj.id)
+              this.areaArr.push(areaObj.name)
+              this.areaTransFiniteNumber.push(areaObj.transFiniteNumber)
+              this.areaAlarmNumber.push(areaObj.alarmNumber)
+            }
+            var barRightUp = echarts.init(document.getElementById('bar-right-up'))
+            barOption.xAxis[0].data = this.areaArr
+            barOption.series[0].data = this.areaAlarmNumber
+            barOption.series[1].data = this.areaTransFiniteNumber
+            barRightUp.setOption(barOption, true)
+            var areaIds = this.areaIdArr
+            barRightUp.on('click', function (params) {
+              let index = params.dataIndex
+              _this.normalOrFault(areaIds[index], '', params.name)
+            })
+          }
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/sensor/sensorDataWarn/dataArea?parentId=9'),
+            method: 'get',
+            params: this.$http.adornParams()
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              console.log('----行业信息----')
+              for (let industryObj of data.dataList) {
+                this.industryIdArr.push(industryObj.id)
+                this.industryArr.push(industryObj.name)
+                this.industryTransFiniteNumber.push(industryObj.transFiniteNumber)
+                this.industryAlarmNumber.push(industryObj.alarmNumber)
+              }
+              var barRightDown = echarts.init(document.getElementById('bar-right-down'))
+              barOption.xAxis[0].data = this.industryArr
+              barOption.series[0].data = this.industryAlarmNumber
+              barOption.series[1].data = this.industryTransFiniteNumber
+              barRightDown.setOption(barOption, true)
+              var industryIds = this.industryIdArr
+              barRightDown.on('click', function (params) {
+                let index = params.dataIndex
+                _this.normalOrFault('', industryIds[index], params.name)
+              })
+            }
+          })
+        })
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  .mod-monitoringWarning {
+    height: 100%;
+    & .modulGround {
+      & .modulePading{
+        height: 100%;
+        padding: 0 10px;
+        & .monitoringModule {
+          text-align: center;
+          background: #042141;
+          line-height: 2em;
+          height: 93%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          & .monitoringCenter{
+            & .upTxt {
+              font-size: 16px;
+            }
+            & .downData {
+              font-size: 20px;
+              font-weight: bold;
+            }
+          }
+        }
+        & .regionModule {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        & .echartsRegion {
+          padding-top: 40px;
+        }
+        & .moduHei {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          & .modCent {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+</style>

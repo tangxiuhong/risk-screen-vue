@@ -1,0 +1,181 @@
+<!--监测信息-实时监测-->
+<template>
+  <div class="moniInfo-realTime-content"  :style="{height: styleHeight}">
+    <div class="moniInfo-realTime-left">
+      <el-tree :data="data" :props="defaultProps" @node-click="nodeClick"></el-tree>
+    </div>
+    <div class="moniInfo-realTime-right">
+      <div class="moniInfo-realTime-right-top">
+        <div class="moniInfo-realTime-right-top-left">{{enterpriseName}}</div>
+        <div class="moniInfo-realTime-right-top-right">监测位置：{{moniPositionCount}} 个</div>
+        <div class="moniInfo-realTime-right-top-right">传感器数量：{{sensorCount}} 个</div>
+      </div>
+      <div class="moniInfo-realTime-right-down">
+        <img src="../../../assets/img/modules/u1737.png" alt="">
+        <div class="content">
+          <div class="red" @click="moniInfoDetailsClick()" style="left: 100px;top:100px;">
+            <p></p><span></span>
+            <div class="name">XXX监测</div>
+          </div>
+
+          <div class="blue" @click="moniInfoDetailsClick()" style="left: 410px;top:260px;">
+            <p></p><span></span>
+            <div class="name">XXX监测</div>
+          </div>
+
+          <div class="orange" @click="moniInfoDetailsClick()" style="left: 400px;top:350px;">
+            <p></p><span></span>
+            <div class="name">XXX监测</div>
+          </div>
+
+          <div class="yellow" @click="moniInfoDetailsClick()" style="left: 600px;top:260px;">
+            <p></p><span></span>
+            <div class="name">XXX监测</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <moni-info-details v-if="moniInfoDetailsVisible" ref="MoniInfoDetails"></moni-info-details>
+  </div>
+</template>
+<script>
+  import MoniInfoDetails from './moniInfoDetails'
+export default {
+    name: 'moniInfo-realTime',
+    components: {MoniInfoDetails},
+    data () {
+      return {
+        styleHeight: window.screen.availHeight - 78 + 'px',
+        moniInfoDetailsVisible: false,
+        enterpriseId: '',
+        enterpriseName: '',
+        moniPositionCount: 0,
+        sensorCount: 0,
+        data: [{
+          label: '所有区域',
+          children: []
+        },
+        {
+          label: '所有行业',
+          children: []
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label',
+          id: 'id'
+        }
+      }
+    },
+    mounted () {
+      this.init()
+    },
+    methods: {
+      init () {
+        this.$http({
+          url: this.$http.adornUrl('/sensor/sensorDataWarn/getTreeSecondLevelAndEnterprise'),
+          method: 'get',
+          params: this.$http.adornParams({
+            parentId: 16
+          })
+        }).then(({data}) => {
+          if (data) {
+            this.data[0].children = data
+            this.enterpriseId = data[0].children[0].id
+            this.enterpriseName = data[0].children[0].label
+          }
+          this.dataListLoading = false
+        })
+      },
+      nodeClick (data) {
+        console.log(data)
+        if (data.id && data.id !== '') {
+          this.enterpriseId = data.id
+          this.enterpriseName = data.label
+        }
+      },
+      moniInfoDetailsClick (data) {
+        console.log(data)
+        this.moniInfoDetailsVisible = true
+        this.$nextTick(() => {
+          this.$refs.MoniInfoDetails.init(this.enterpriseId)
+        })
+      }
+    }
+  }
+</script>
+
+<style>
+  .moniInfo-realTime-content{
+    width: 100%;
+    height: 550px;
+  }
+  .moniInfo-realTime-left{
+    width: 19%;
+    height: 100%;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    background-color: #001837;
+    float: left;
+  }
+  .moniInfo-realTime-right{
+    width: 79%;
+    height: 100%;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 2px #133050 solid;
+    background-color: #001837;
+    float: left;
+  }
+  .moniInfo-realTime-right-top{
+    width: 100%;
+    height: 9%;
+    margin-top: 1%;
+    font-weight: bold;
+    float: left;
+  }
+  .moniInfo-realTime-right-top-left{
+    height: 100%;
+    font-size: 20px;
+    padding: 15px;
+    margin-left: 15px;
+    background-color: #042141;
+    border-radius: 5px;
+    float: left;
+  }
+  .moniInfo-realTime-right-top-right{
+    height: 100%;
+    margin-left: 15px;
+    font-size: 14px;
+    padding: 15px;
+    background-color: #042141;
+    border-radius: 5px;
+    color: #F6D650;
+    float: left;
+  }
+  .moniInfo-realTime-right-down{
+    position: relative;
+    width: 98%;
+    height: 86%;
+    margin: 1%;
+    float: left;
+  }
+  /*图内点样式*/
+  .moniInfo-realTime-right-down img{width: 100%;height: 100%;}
+  .moniInfo-realTime-right-down .content{width: 100%;height:100%;position: absolute;left: 0px;top: 0px;color: #0D1E41}
+  .moniInfo-realTime-right-down .content .name {background-color: #0D1E41;color: #FFF;margin-left: 30px;width: 80px;padding-left: 5px}
+  .moniInfo-realTime-right-down .content .red p{position: absolute;width: 20px;height: 20px;margin: 0;border-radius:50%;animation: myfirst 1.5s  infinite;background-color: rgba(255,0,0,0.6); }
+  .moniInfo-realTime-right-down .content .red span{position: absolute;display:block;width: 20px;height: 20px;border-radius:50%;animation: myfirst 1.5s  infinite;background-color: rgba(255,0,0,0.5); animation-delay: 0.5s;}
+
+  .moniInfo-realTime-right-down .content .yellow{width: 20px;height: 20px;border-radius:50%;position: relative;background: yellow;position: absolute;cursor: pointer;}
+  .moniInfo-realTime-right-down .content .orange{width: 20px;height: 20px;border-radius:50%;position: relative;background: orange;position: absolute;cursor: pointer;}
+  .moniInfo-realTime-right-down .content .blue{width: 20px;height: 20px;border-radius:50%;position: relative;background: blue;position: absolute;cursor: pointer;}
+  .moniInfo-realTime-right-down .content .red{width: 20px;height: 20px;border-radius:50%;position: relative;background: red;position: absolute;cursor: pointer;}
+  @keyframes myfirst{
+    20% {transform: scale(1);}
+    40% {transform: scale(2);}
+    60% {transform: scale(3);}
+    80% {transform: scale(4);}
+    100% {transform: scale(5);}
+  }
+</style>

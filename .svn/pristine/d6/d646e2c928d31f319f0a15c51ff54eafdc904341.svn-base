@@ -1,0 +1,539 @@
+<template>
+  <div class="mod-hiddenRisk">
+    <!--标题-->
+    <el-row>
+      <el-col :span="20">
+        <!--内容区标题公共样式contentTitle，contentImg，contentTxt-->
+        <div class="modTitleBox">
+          <div class="modTitle" @click="selectLists()">
+            <span class="modImg"><img src="../../../assets/img/hiddenRiskManagement/u236.png" alt=""></span>
+            <span class="modTxt">隐患治理信息</span>
+          </div>
+          <div class="modSelectList" v-show="selectList"  @click="selectList = false">
+            <div><a href="https://www.baidu.com" target="_blank"
+                    style="text-decoration: none; color: #F6D650;">两化管理系统</a></div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+    <div :style="{height: styleHeight}">
+      <!--上-->
+      <el-row :gutter="10" style="height: 45%;">
+        <!--左上-->
+        <el-col :span="8" style="height: 98%;">
+          <div class="modulGround moduleTop" style="height: 100%;">
+            <div class="modulTitle">
+              <p>区街/行业隐患治理</p>
+              <span></span>
+            </div>
+            <!--盛放内容模块公共样式名称：moduleContent-->
+            <div class="moduleContent">
+              <div class="hiddenRisk-left-up">
+                <div class="hiddenCity">{{name}}</div>
+                <el-row :gutter="10" style="height: 100%;">
+                  <el-col :span="12" style="height: 42%;">
+                    <div class="hiddenRiskModule">
+                      <div class="riskModuleCenter">
+                        <div class="upTxt">注册企业（家）</div>
+                        <div class="downData" style="color:#F73363">{{unitNum}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" style="height: 42%;">
+                    <div class="hiddenRiskModule">
+                      <div class="riskModuleCenter">
+                        <div class="upTxt">排查隐患/未整改隐患(条)</div>
+                        <div class="downData" style="color:#1D75B4">{{troubleCount}}/{{WZGTroubleCount}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" style="height: 42%;">
+                    <div class="hiddenRiskModule">
+                      <div class="riskModuleCenter">
+                        <div class="upTxt">重大隐患(条)</div>
+                        <div class="downData" style="color:#FF9900">{{hTroubleNum}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" style="height: 42%;">
+                    <div class="hiddenRiskModule">
+                      <div class="riskModuleCenter">
+                        <div class="upTxt">一般隐患(条)</div>
+                        <div class="downData" style="color:#FF9900">{{troubleNum}}</div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <!--右上-->
+        <el-col :span="16" style="height: 98%;">
+          <div class="modulGround moduleTop" style="height: 100%;">
+            <div class="hiddenRisk-left-up">
+              <div class="modulTitle">
+                <p>{{month}}月全市隐患排查治理</p>
+                <span></span>
+              </div>
+              <div class="moduleContent hiddenRisk-right-down">
+                <el-row :gutter="5" style="height: 100%">
+                  <el-col :span="12" style="height: 100%;">
+                    <table class="tab-hover" style="height: 100%;">
+                      <thead>
+                      <tr>
+                        <th rowspan="2">序号</th>
+                        <th rowspan="2">区街</th>
+                        <th colspan="2">风险转化隐患</th>
+                        <th colspan="2">隐患与风险关联</th>
+                      </tr>
+                      <tr class="TableTitle">
+                        <th>本月数量</th>
+                        <th>上月数量</th>
+                        <th>本月数量</th>
+                        <th>上月数量</th>
+                      </tr>
+                      </thead>
+                      <tbody id="areaHiddenContent">
+                      <tr v-for="(item,index) in areaHiddenArr.slice(0, 7)">
+                        <td>{{index+1}}</td>
+                        <td style="cursor:pointer;" @click="getHiddenInfo(0,item.areaCode,item.areaName)">
+                          {{item.areaName}}
+                        </td>
+                        <td @click="tableList(1,item.areaCode)" style="cursor:pointer;">{{item.entNum}}</td>
+                        <td @click="tableList(2,item.areaCode)" style="cursor:pointer;">{{item.lastEntNum}}</td>
+                        <td @click="tableList(3,item.areaCode)" style="cursor:pointer;">{{item.hiddenEntNum}}</td>
+                        <td @click="tableList(4,item.areaCode)" style="cursor:pointer;">{{item.lastHiddenEntNum}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </el-col>
+                  <el-col :span="12" style="height: 100%;">
+                    <table class="tab-hover" style="height: 100%;">
+                      <thead>
+                      <tr>
+                        <th rowspan="2">序号</th>
+                        <th rowspan="2">区街</th>
+                        <th colspan="2">风险转化隐患</th>
+                        <th colspan="2">隐患与风险关联</th>
+                      </tr>
+                      <tr class="TableTitle">
+                        <th>本月数量</th>
+                        <th>上月数量</th>
+                        <th>本月数量</th>
+                        <th>上月数量</th>
+                      </tr>
+                      </thead>
+                      <tbody id="areaHiddenContent2">
+                      <tr v-for="(item,index) in areaHiddenArr.slice(7, 13)">
+                        <td>{{index+8}}</td>
+                        <td style="cursor:pointer;" @click="getHiddenInfo(0,item.areaCode,item.areaName)">
+                          {{item.areaName}}
+                        </td>
+                        <td @click="tableList(1,item.areaCode)" style="cursor:pointer;">{{item.entNum}}</td>
+                        <td @click="tableList(2,item.areaCode)" style="cursor:pointer;">{{item.lastEntNum}}</td>
+                        <td @click="tableList(3,item.areaCode)" style="cursor:pointer;">{{item.hiddenEntNum}}</td>
+                        <td @click="tableList(4,item.areaCode)" style="cursor:pointer;">{{item.lastHiddenEntNum}}</td>
+                      </tr>
+                      <tr>
+                        <td>14</td>
+                        <td style="cursor:pointer;">—</td>
+                        <td @click="tableList" style="cursor:pointer;">—</td>
+                        <td @click="tableList" style="cursor:pointer;">—</td>
+                        <td @click="tableList" style="cursor:pointer;">—</td>
+                        <td @click="tableList" style="cursor:pointer;">—</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+
+          </div>
+        </el-col>
+      </el-row>
+      <!--下-->
+      <el-row :gutter="10" style="height: 55%;">
+        <!--左下-->
+        <el-col :span="8" style="height: 100%;">
+          <div class="modulGround moduleTop" style="height: 100%;">
+            <div class="modulTitle">
+              <p @click="cityDanger()" style="cursor:pointer;">全市隐患排查治理</p>
+              <span></span>
+            </div>
+            <div class="moduleContent hiddenRisk-left-down">
+              <el-row :gutter="10" style="height: 100%;">
+                <el-col :span="12" style="height: 30%;">
+                  <div class="hiddenRiskModule" style="cursor:pointer;" @click='registerEnterprise()'>
+                    <div class="riskModuleCenter">
+                      <div class="upTxt">注册企业（家）</div>
+                      <div class="downData" style="color:#F73363">{{cityUnitNum}}</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="12" style="height: 30%;">
+                  <div class="hiddenRiskModule">
+                    <div class="riskModuleCenter">
+                      <div class="upTxt">排查隐患/未整改隐患(条)</div>
+                      <div class="downData" style="color:#1D75B4">{{cityTroubleCount}}/{{cityTroubleWZGCount}}</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="12" style="height: 30%;">
+                  <div class="hiddenRiskModule" style="cursor:pointer;" @click='HTroubleInfo()'>
+                    <div class="riskModuleCenter">
+                      <div class="upTxt">重大隐患(条)</div>
+                      <div class="downData" style="color:#FF9900">{{cityHTroubleNum}}</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="12" style="height: 30%;">
+                  <div class="hiddenRiskModule" style="cursor:pointer;" @click='troubleInfo()'>
+                    <div class="riskModuleCenter">
+                      <div class="upTxt">一般隐患(条)</div>
+                      <div class="downData" style="color:#FF9900">{{cityTroubleNum}}</div>
+                    </div>
+                  </div>
+                </el-col>
+                <el-col style="height: 39%;">
+                  <div class="hiddenRiskModule">
+                    <div class="riskModuleCenter">
+                      <div class="upTxt">隐患整改相符率</div>
+                      <div class="downData" style="color:#FF9900; font-size: 30px;">{{76}}%</div>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
+        <!--右下-->
+        <el-col :span="16" style="height: 100%;">
+          <div class="modulGround moduleTop" style="height: 100%;">
+            <div class="modulTitle">
+              <p>{{month}}月专委会隐患排查治理</p>
+              <span></span>
+            </div>
+            <div class="moduleContent">
+              <el-row class="hiddenRisk-left-down" :gutter="5" style="height: 100%;">
+                <el-col :span="12" style="height: 100%;">
+                  <table class="tab-hover" style="height: 100%;">
+                    <thead>
+                    <tr>
+                      <th rowspan="2">序号</th>
+                      <th rowspan="2">行业</th>
+                      <th colspan="2">风险转化隐患</th>
+                      <th colspan="2">隐患与风险关联</th>
+                    </tr>
+                    <tr class="TableTitle">
+                      <th>本月数量</th>
+                      <th>上月数量</th>
+                      <th>本月数量</th>
+                      <th>上月数量</th>
+                    </tr>
+                    </thead>
+                    <tbody id="industryHiddenContent">
+                    <tr v-for="(item,index) in industryHiddenArr.slice(0, 10)">
+                      <td>{{index+1}}</td>
+                      <td style="cursor:pointer;" @click="getHiddenInfo(1,item.industryCode,item.industryName)">
+                        {{item.industryName }}
+                      </td>
+                      <td @click="tableList(5,item.industryCode)" style="cursor:pointer;">{{item.entNum }}</td>
+                      <td @click="tableList(6,item.industryCode)" style="cursor:pointer;">{{item.lastEntNum }}</td>
+                      <td @click="tableList(7,item.industryCode)" style="cursor:pointer;">{{item.hiddenEntNum }}</td>
+                      <td @click="tableList(8,item.industryCode)" style="cursor:pointer;">{{item.lastHiddenEntNum }}
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </el-col>
+                <el-col :span="12" style="height: 100%;">
+                  <table class="tab-hover" style="height: 100%;">
+                    <thead>
+                    <tr>
+                      <th rowspan="2">序号</th>
+                      <th rowspan="2">行业</th>
+                      <th colspan="2">风险转化隐患</th>
+                      <th colspan="2">隐患与风险关联</th>
+                    </tr>
+                    <tr class="TableTitle">
+                      <th>本月数量</th>
+                      <th>上月数量</th>
+                      <th>本月数量</th>
+                      <th>上月数量</th>
+                    </tr>
+                    </thead>
+                    <tbody id="industryHiddenContent2">
+                    <tr v-for="(item,index) in industryHiddenArr.slice(10, 20)">
+                      <td>{{index+11}}</td>
+                      <td style="cursor:pointer;" @click="getHiddenInfo(1,item.industryCode,item.industryName)">
+                        {{item.industryName}}
+                      </td>
+                      <td @click="tableList(5,item.industryCode)" style="cursor:pointer;">{{item.entNum}}</td>
+                      <td @click="tableList(6,item.industryCode)" style="cursor:pointer;">{{item.lastEntNum}}</td>
+                      <td @click="tableList(7,item.industryCode)" style="cursor:pointer;">{{item.hiddenEntNum}}</td>
+                      <td @click="tableList(8,item.industryCode)" style="cursor:pointer;">{{item.lastHiddenEntNum}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+
+    <!--全市隐患排查-->
+    <city-danger v-if="cityDangerVisible" ref="cityDanger"></city-danger>
+    <!--企业注册弹框-->
+    <register-enterprise v-if="registerEnterpriseVisible" ref="registerEnterprise"></register-enterprise>
+    <!--重大隐患-->
+    <major-hidden-danger v-if="majorHiddenDangerVisible" ref="majorHiddenDanger"></major-hidden-danger>
+    <!-- 一般隐患 -->
+    <hidden-danger v-if="hiddenDangerVisible" ref="hiddenDanger"></hidden-danger>
+    <!--风险转隐患列表弹框-->
+    <risk-to-hidden v-if="riskToHiddenVisible" ref="riskToHidden"></risk-to-hidden>
+    <!-- 隐患影响风险列表弹框 -->
+    <hidden-effect-risk v-if="riskToHiddenVisible" ref="hiddenEffectRisk">></hidden-effect-risk>
+  </div>
+</template>
+
+<script>
+  import cityDanger from './hiddRiskMana-cityDanger'
+  import registerEnterprise from './hiddRiskMana-regiEnte'
+  import majorHiddenDanger from './hiddRiskMana-majorHiddenDanger'
+  import hiddenDanger from './hiddRiskMana-hiddenDanger'
+  import riskToHidden from './hiddRiskMana-riskToHidden'
+  import hiddenEffectRisk from './hiddRiskMana-hiddenEffectRisk'
+
+  export default {
+    data () {
+      return {
+        styleHeight: window.screen.availHeight - 118 + 'px',
+        month: '',
+        areaName: '',
+        name: '鄂城区',
+        unitNum: 0,
+        hTroubleNum: 0,
+        troubleNum: 0,
+        troubleCount: 0,
+        WZGTroubleCount: 0,
+        cityUnitNum: 0,
+        cityHTroubleNum: 0,
+        cityTroubleNum: 0,
+        cityTroubleCount: 0,
+        cityTroubleWZGCount: 0,
+        selectList: false,
+        tableLists: {},
+        areaHiddenArr: [],
+        industryHiddenArr: [],
+        cityDangerVisible: false,
+        registerEnterpriseVisible: false,
+        majorHiddenDangerVisible: false,
+        hiddenDangerVisible: false,
+        riskToHiddenVisible: false,
+        hiddenEffectRiskVisible: false
+      }
+    },
+    components: {
+      cityDanger,
+      registerEnterprise,
+      majorHiddenDanger,
+      hiddenDanger,
+      riskToHidden,
+      hiddenEffectRisk
+    },
+    mounted () {
+      this.getCityHiddenInfo()
+      this.getAreaHiddenCheckInfo()
+      this.getIndustryHiddenCheckInfo()
+      this.getMonth()
+    },
+    methods: {
+      // 获取标题当前月份
+      getMonth () {
+        let date = new Date()
+        this.month = date.getMonth() + 1
+      },
+      // 获取区街下隐患排查信息
+      getAreaHiddenCheckInfo () {
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCheck/getAreaHiddenCheckInfo'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.areaHiddenArr = []
+            this.areaHiddenArr = data.list
+            this.getHiddenInfo(0, this.areaHiddenArr[0].areaCode, this.areaHiddenArr[0].areaName)
+          } else {
+            this.areaHiddenArr = []
+          }
+        })
+      },
+      // 获取专委会隐患排查治理信息
+      getIndustryHiddenCheckInfo () {
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCheck/getIndustryHiddenCheckInfo'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.industryHiddenArr = []
+            this.industryHiddenArr = data.list
+          } else {
+            this.industryHiddenArr = []
+          }
+        })
+      },
+      // 全市隐患排查治理 左下部分
+      getCityHiddenInfo () {
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCheck/getCityHiddenInfo'),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.cityUnitNum = data.cityUnitNum
+            this.cityHTroubleNum = data.cityHTroubleNum
+            this.cityTroubleNum = data.cityTroubleNum
+            this.cityTroubleCount = data.cityTroubleCount
+            this.cityTroubleWZGCount = data.cityTroubleWZGCount
+          }
+        })
+      },
+      // 区街行业隐患治理 左上部分
+      // flag 0 区街
+      // flag 1 行业
+      getHiddenInfo (flag, id, name) {
+        this.name = name
+        let params
+        if (flag === 0) {
+          params = this.$http.adornParams({areaCode: id})
+        } else if (flag === 1) {
+          params = this.$http.adornParams({industryCode: id})
+        }
+        this.$http({
+          url: this.$http.adornUrl('/hiddenCheck/getHiddenInfo'),
+          method: 'get',
+          params: params
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.unitNum = data.unitNum
+            this.hTroubleNum = data.hTroubleNum
+            this.troubleNum = data.troubleNum
+            this.troubleCount = data.troubleCount
+            this.WZGTroubleCount = data.zgTroubleCount
+          }
+        })
+      },
+      // 全市隐患治理弹框
+      cityDanger () {
+        this.cityDangerVisible = true
+        this.$nextTick(() => {
+          this.$refs.cityDanger.init()
+        })
+      },
+      // 注册企业弹框
+      registerEnterprise () {
+        this.registerEnterpriseVisible = true
+        this.$nextTick(() => {
+          this.$refs.registerEnterprise.init()
+        })
+      },
+      // 重大隐患弹框
+      HTroubleInfo () {
+        this.majorHiddenDangerVisible = true
+        this.$nextTick(() => {
+          this.$refs.majorHiddenDanger.init()
+        })
+      },
+      // 一般隐患弹框
+      troubleInfo () {
+        this.hiddenDangerVisible = true
+        this.$nextTick(() => {
+          this.$refs.hiddenDanger.init()
+        })
+      },
+      // table行业企业列表弹框
+      tableList (flag, code) {
+        if (flag === 1 || flag === 2 || flag === 5 || flag === 6) {
+          this.riskToHiddenVisible = true
+          this.$nextTick(() => {
+            this.$refs.riskToHidden.init(flag, code)
+          })
+        } else if (flag === 3 || flag === 4 || flag === 7 || flag === 8) {
+          this.hiddenEffectRiskVisible = true
+          this.$nextTick(() => {
+            this.$refs.hiddenEffectRisk.init(flag, code)
+          })
+        }
+      },
+      selectLists () {
+        this.selectList = !this.selectList
+      },
+      selected () {
+        this.selectList = !this.selectList
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  .mod-hiddenRisk {
+    height: 100%;
+
+    & .modulGround {
+      & .hiddenRisk-left-up,
+      & .hiddenRisk-left-down{
+        padding: 0 10px;
+        height: 100%;
+        & .hiddenCity {
+          font-size: 20px;
+          line-height: 2em;
+        }
+      }
+      & .hiddenRisk-right-down,
+      & .hiddenRisk-left-down {
+        & .tab-hover {
+          & thead {
+            & th {
+              background: #042141;
+              padding: 7px 0;
+              border: 1px solid #133050;
+            }
+            & .TableTitle th {
+              background: none;
+              font-size: 14px;
+              font-weight: normal;
+            }
+          }
+        }
+      }
+    }
+
+    & .hiddenRiskModule {
+      text-align: center;
+      background: #042141;
+      line-height: 2em;
+      margin: 5px 0px;
+      /*padding: 20px 0;*/
+      height: 90%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & .riskModuleCenter{
+        width: 100%;
+      }
+      & .upTxt {
+
+      }
+      & .downData {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+  }
+</style>
